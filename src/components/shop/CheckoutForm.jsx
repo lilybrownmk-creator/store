@@ -463,7 +463,8 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
             <p className="text-base tracking-[0.15em] text-[#3D4F3D] font-light">Coming Soon</p>
             <p className="text-[10px] text-[#3D4F3D]/40 tracking-wider text-center leading-relaxed">
               Online payment HASKORO.<br />In the meantime, please reach us directly to complete your order.
-  <Button
+
+              <Button
   type="button"
   className="w-full bg-[#3D4F3D] hover:bg-[#2D3F2D] text-white h-12 rounded-none"
   onClick={async () => {
@@ -510,3 +511,4 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
 >
   PLACE ORDER
 </Button>
+ 
