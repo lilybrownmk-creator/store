@@ -452,25 +452,7 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
             </div>
           </div>
 
-          {/* Payment coming soon */}
-          <div className="border border-dashed border-[#3D4F3D]/30 p-6 flex flex-col items-center gap-3 bg-white/50">
-            <div className="flex items-center gap-2 text-[#3D4F3D]/40">
-              <div className="h-px w-8 bg-[#3D4F3D]/20" />
-              <CreditCard className="w-4 h-4" />
-              <div className="h-px w-8 bg-[#3D4F3D]/20" />
-            </div>
-            <p className="text-[10px] tracking-[0.25em] text-[#3D4F3D]/50 uppercase">Payment Options</p>
-            <p className="text-base tracking-[0.15em] text-[#3D4F3D] font-light">Coming Soon</p>
-            <p className="text-[10px] text-[#3D4F3D]/40 tracking-wider text-center leading-relaxed">
-              Online payment is on its way.<br />In the meantime, please reach us directly to complete your order.
-            </p>
-          </div>
-        </form>
-      </DialogContent>
-    </Dialog>
-  )
-}
-<Button
+          <Button
   type="button"
   className="w-full bg-[#3D4F3D] hover:bg-[#2D3F2D] text-white h-12 rounded-none"
   onClick={async () => {
@@ -517,3 +499,22 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
 >
   PLACE ORDER
 </Button>
+          {/* Payment coming soon */}
+          <div className="border border-dashed border-[#3D4F3D]/30 p-6 flex flex-col items-center gap-3 bg-white/50">
+            <div className="flex items-center gap-2 text-[#3D4F3D]/40">
+              <div className="h-px w-8 bg-[#3D4F3D]/20" />
+              <CreditCard className="w-4 h-4" />
+              <div className="h-px w-8 bg-[#3D4F3D]/20" />
+            </div>
+            <p className="text-[10px] tracking-[0.25em] text-[#3D4F3D]/50 uppercase">Payment Options</p>
+            <p className="text-base tracking-[0.15em] text-[#3D4F3D] font-light">Coming Soon</p>
+            <p className="text-[10px] text-[#3D4F3D]/40 tracking-wider text-center leading-relaxed">
+              Online payment is on its way.<br />In the meantime, please reach us directly to complete your order.
+            </p>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
