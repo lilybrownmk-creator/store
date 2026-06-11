@@ -511,3 +511,13 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
 >
   PLACE ORDER
 </Button>
+
+            <Button
+  type="button"
+  className="w-full bg-[#3D4F3D] hover:bg-[#2D3F2D] text-white h-12 rounded-none"
+  onClick={...}
+>
+  PLACE ORDER
+</Button>
+
+</div>
