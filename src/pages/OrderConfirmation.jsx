@@ -39,12 +39,12 @@ export default function OrderConfirmation() {
             {order.items && JSON.parse(typeof order.items === 'string' ? order.items : JSON.stringify(order.items)).map((item, i) => (
               <div key={i} className="flex justify-between text-xs text-[#3D4F3D]">
                 <span>{item.product_name || item.name} × {item.quantity}</span>
-                <span>€{(item.price * item.quantity).toFixed(2)}</span>
+                <span>{formatPrice(item.price * item.quantity)}</span>
               </div>
             ))}
             <div className="border-t border-[#3D4F3D]/10 pt-2 flex justify-between text-sm text-[#3D4F3D] font-medium">
               <span>Total</span>
-              <span>€{order.total?.toFixed(2)}</span>
+              <span>{formatPrice(order.total)}</span>
             </div>
           </div>
         )}
