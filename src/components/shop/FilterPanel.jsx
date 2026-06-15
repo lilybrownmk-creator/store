@@ -111,7 +111,7 @@ export default function FilterPanel({ filters, onFiltersChange, allProducts, isO
           />
           <div className="flex justify-between text-xs text-[#3D4F3D]/70">
             <span>€0</span>
-            <span>€{filters.priceRange[1]}</span>
+           <span>{filters.priceRange[1]} ден</span>
           </div>
         </div>
       </div>
