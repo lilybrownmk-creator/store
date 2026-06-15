@@ -17,6 +17,7 @@ import { Package, ShoppingCart, Euro, AlertCircle, Plus, Pencil, Search, Clock, 
 import { format } from 'date-fns'
 import { toast } from 'sonner'
 import { supabase } from '@/lib/supabaseClient'
+import { formatPrice } from '@/lib/utils'
 import { fetchAllProducts, createProduct, updateProduct } from '@/api/products'
 import { fetchAllOrders, updateOrder } from '@/api/orders'
 
