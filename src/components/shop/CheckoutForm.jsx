@@ -510,12 +510,12 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
     }
   }}
 >
-  НАПРАВИ НАРАЧКА
+  
 </Button>
 
 <div className="mt-3 p-3 border border-[#3D4F3D]/20 bg-[#3D4F3D]/5 text-center">
   <p className="text-sm font-medium text-[#3D4F3D]">
-    Плаќањето е при достава
+ 
   </p>
 </div>
 
