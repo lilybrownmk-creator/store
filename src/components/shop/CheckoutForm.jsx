@@ -519,7 +519,6 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
   </p>
 </div>
 
-{/* Payment coming soon */}
 </Button>
           {/* Payment coming soon */}
           <div className="border border-dashed border-[#3D4F3D]/30 p-6 flex flex-col items-center gap-3 bg-white/50">
