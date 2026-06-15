@@ -161,7 +161,7 @@ export default function ProductDetail() {
               }}
                 style={{ touchAction: 'manipulation' }}
                 className={`px-3 py-1.5 text-[11px] tracking-[0.1em] border transition-all ${v.id === product.id ? 'bg-[#3D4F3D] text-white border-[#3D4F3D]' : 'border-[#3D4F3D]/30 text-[#3D4F3D]'}`}>
-                {v.size || `€${v.price}`}
+                {v.size || formatPrice(v.price)}
               </button>
             ))}
           </div>
