@@ -452,7 +452,7 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
             </div>
           </div>
 
-          <Separator className="bg-[#3D4F3D]/10" />
+      
 
 <Button
   type="button"
