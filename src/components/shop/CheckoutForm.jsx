@@ -497,8 +497,13 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
     }
   }}
 >
-  PLACE ORDER
+  НАПРАВИ НАРАЧКА
 </Button>
+          <div className="mt-3 p-3 border border-[#3D4F3D]/20 bg-[#3D4F3D]/5 text-center">
+  <p className="text-sm font-medium text-[#3D4F3D]">
+    Плаќањето е при достава
+  </p>
+</div>
           {/* Payment coming soon */}
           <div className="border border-dashed border-[#3D4F3D]/30 p-6 flex flex-col items-center gap-3 bg-white/50">
             <div className="flex items-center gap-2 text-[#3D4F3D]/40">
