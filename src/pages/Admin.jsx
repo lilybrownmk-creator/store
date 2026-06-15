@@ -422,7 +422,8 @@ export default function Admin() {
                               </TableCell>
                               <TableCell>{order.items?.length || 0} items</TableCell>
                              <TableCell className="font-medium">
-  {Number(order.total).toFixed(0)} {order.currency}
+  <TableCell className="font-medium">
+  {formatPrice(order.total)}
 </TableCell>
                               <TableCell>
                                 <Badge className={order.payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}>
