@@ -452,11 +452,24 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
             </div>
           </div>
 
-          <Button
+          <Separator className="bg-[#3D4F3D]/10" />
+
+<Button
   type="button"
-  className="w-full bg-[#3D4F3D] hover:bg-[#2D3F2D] text-white h-12 rounded-none"
+  className="w-full bg-[#3D4F3D] hover:bg-[#2D3F2D] text-white text-xs tracking-[0.2em] h-12 rounded-none"
   onClick={async () => {
     try {
+      if (!deliveryDate) {
+        return toast.error('Ве молиме изберете датум')
+      }
+
+      if (
+        deliveryMethod === 'delivery' &&
+        !formData.delivery_address
+      ) {
+        return toast.error('Ве молиме внесете адреса за достава')
+      }
+
       const order = await createOrder({
         ...formData,
         delivery_method: deliveryMethod,
@@ -487,7 +500,7 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
         gift_message: giftMessage,
       })
 
-      toast.success('Order created successfully')
+      toast.success('Нарачката е успешно креирана')
 
       onOrderSuccess?.()
 
@@ -497,7 +510,16 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
     }
   }}
 >
-  PLACE ORDER
+  НАПРАВИ НАРАЧКА
+</Button>
+
+<div className="mt-3 p-3 border border-[#3D4F3D]/20 bg-[#3D4F3D]/5 text-center">
+  <p className="text-sm font-medium text-[#3D4F3D]">
+    Плаќањето е при достава
+  </p>
+</div>
+
+{/* Payment coming soon */}
 </Button>
           {/* Payment coming soon */}
           <div className="border border-dashed border-[#3D4F3D]/30 p-6 flex flex-col items-center gap-3 bg-white/50">
