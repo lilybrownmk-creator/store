@@ -17,7 +17,6 @@ import { Package, ShoppingCart, Euro, AlertCircle, Plus, Pencil, Search, Clock, 
 import { format } from 'date-fns'
 import { toast } from 'sonner'
 import { supabase } from '@/lib/supabaseClient'
-import { formatPrice } from '@/lib/utils'
 import { fetchAllProducts, createProduct, updateProduct } from '@/api/products'
 import { fetchAllOrders, updateOrder } from '@/api/orders'
 
@@ -68,7 +67,7 @@ function ProductForm({ product, onSubmit, onClose }) {
           <Input value={formData.ean} onChange={e => set({ ean: e.target.value })} className="mt-1" />
         </div>
         <div>
-          <Label>Цена (ден) *</Label>
+          <Label>Price (€) *</Label>
           <Input type="number" step="0.01" value={formData.price} onChange={e => set({ price: e.target.value })} required className="mt-1" />
         </div>
         <div>
@@ -276,7 +275,7 @@ export default function Admin() {
             { label: 'Products',       value: products.length,         icon: Package,      bg: 'bg-blue-100',   ic: 'text-blue-600' },
             { label: 'Low Stock',      value: lowStock,                icon: AlertCircle,  bg: 'bg-amber-100',  ic: 'text-amber-600' },
             { label: 'Pending Orders', value: pendingOrders,           icon: ShoppingCart, bg: 'bg-purple-100', ic: 'text-purple-600' },
-            { label: 'Revenue', value: formatPrice(totalRevenue), icon: Euro, bg: 'bg-green-100', ic: 'text-green-600' },
+            { label: 'Revenue',        value: `€${totalRevenue.toFixed(0)}`, icon: Euro,   bg: 'bg-green-100',  ic: 'text-green-600' },
           ].map(stat => (
             <Card key={stat.label}>
               <CardContent className="p-4">
@@ -344,9 +343,7 @@ export default function Admin() {
                             <TableCell className="font-medium max-w-xs truncate">{product.name}</TableCell>
                             <TableCell className="text-stone-500 text-sm">{product.sku || '-'}</TableCell>
                             <TableCell><Badge variant="secondary">{product.category}</Badge></TableCell>
-                            <TableCell>
-  {formatPrice(product.price)}
-</TableCell>
+                            <TableCell>€{Number(product.price).toFixed(2)}</TableCell>
                             <TableCell>
                               <span className={product.stock <= 0 ? 'text-red-600' : product.stock < 5 ? 'text-amber-600' : ''}>
                                 {product.stock}
@@ -421,8 +418,8 @@ export default function Admin() {
                                 </div>
                               </TableCell>
                               <TableCell>{order.items?.length || 0} items</TableCell>
-                             <TableCell className="font-medium"> {formatPrice(order.total)}</TableCell>
-                  
+                              <TableCell className="font-medium">€{Number(order.total).toFixed(2)}</TableCell>
+                              <TableCell>
                                 <Badge className={order.payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}>
                                   {order.payment_status}
                                 </Badge>
