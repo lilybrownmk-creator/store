@@ -68,7 +68,7 @@ function ProductForm({ product, onSubmit, onClose }) {
           <Input value={formData.ean} onChange={e => set({ ean: e.target.value })} className="mt-1" />
         </div>
         <div>
-          <Label>Price (€) *</Label>
+          <Label>Цена (ден) *</Label>
           <Input type="number" step="0.01" value={formData.price} onChange={e => set({ price: e.target.value })} required className="mt-1" />
         </div>
         <div>
