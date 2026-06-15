@@ -451,7 +451,11 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
               <span>{formatPrice(total)}</span>
             </div>
           </div>
-
+       <div className="mt-3 p-3 border border-[#3D4F3D]/20 bg-[#3D4F3D]/5 text-center">
+  <p className="text-sm font-medium text-[#3D4F3D]">
+    Плаќањето е при достава
+  </p>
+</div>
           <Button
   type="button"
   className="w-full bg-[#3D4F3D] hover:bg-[#2D3F2D] text-white h-12 rounded-none"
@@ -498,11 +502,6 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
   }}
 >
   НАПРАВИ НАРАЧКА
-                   <div className="mt-3 p-3 border border-[#3D4F3D]/20 bg-[#3D4F3D]/5 text-center">
-  <p className="text-sm font-medium text-[#3D4F3D]">
-    Плаќањето е при достава
-  </p>
-</div>
 </Button>
   
           {/* Payment coming soon */}
