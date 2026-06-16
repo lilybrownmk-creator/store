@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@/components/ui/separator'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Loader2, CheckCircle, Store, Truck, Calendar, CreditCard, ArrowLeft } from 'lucide-react'
+import { format, addDays, nextTuesday, nextFriday } from 'date-fns'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
@@ -16,6 +17,15 @@ import { formatPrice } from '@/lib/utils'
 import { useT } from '@/lib/i18n'
 import PWAInstallPrompt from '@/components/shop/PWAInstallPrompt'
 
+// ── Delivery date helpers ────────────────────────────────────────────────────
+function getDeliveryDates() {
+  const today = new Date()
+  let tue = nextTuesday(today)
+  let fri = nextFriday(today)
+  if (tue <= today) tue = addDays(tue, 7)
+  if (fri <= today) fri = addDays(fri, 7)
+  return { tuesday: tue, friday: fri }
+}
 
 // ── Load Revolut embed script once ──────────────────────────────────────────
 function useRevolutScript() {
@@ -211,6 +221,7 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
 
   const handleSubmit = e => {
     e.preventDefault()
+    if (!deliveryDate) return toast.error('Please select a date')
     if (deliveryMethod === 'delivery' && !formData.delivery_address) {
       return toast.error('Please enter a delivery address')
     }
@@ -322,6 +333,26 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
             )}
           </div>
 
+          {/* Date selection */}
+          <div className="space-y-3">
+            <Label className="text-[10px] text-[#3D4F3D]/70 tracking-wider flex items-center gap-2">
+              <Calendar className="w-3 h-3" />
+              {deliveryMethod === 'pickup' ? t('pickup_date') : t('delivery_date')}
+            </Label>
+            <Select value={deliveryDate} onValueChange={setDeliveryDate}>
+              <SelectTrigger className="bg-white border-[#3D4F3D]/20 rounded-none h-11 text-[#3D4F3D] focus:border-[#3D4F3D] focus:ring-0">
+                <SelectValue placeholder={t('select_date')} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={format(dates.tuesday, 'yyyy-MM-dd')}>
+                  Tuesday, {format(dates.tuesday, 'MMMM d')}
+                </SelectItem>
+                <SelectItem value={format(dates.friday, 'yyyy-MM-dd')}>
+                  Friday, {format(dates.friday, 'MMMM d')}
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
           <Separator className="bg-[#3D4F3D]/10" />
 
@@ -433,7 +464,7 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
       const order = await createOrder({
         ...formData,
         delivery_method: deliveryMethod,
-        delivery_date: null,
+        delivery_date: deliveryDate,
         delivery_address:
           deliveryMethod === 'pickup'
             ? '19, Luj Paster str, Skopje 1000'
