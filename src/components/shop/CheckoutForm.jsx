@@ -211,7 +211,6 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
 
   const handleSubmit = e => {
     e.preventDefault()
-    if (!deliveryDate) return toast.error('Please select a date')
     if (deliveryMethod === 'delivery' && !formData.delivery_address) {
       return toast.error('Please enter a delivery address')
     }
