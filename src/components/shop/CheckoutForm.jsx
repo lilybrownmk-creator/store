@@ -331,7 +331,14 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
       </p>
     </>
   ) : (
-    
+    <>
+      <p className="text-sm text-[#3D4F3D] font-medium">
+        Преземање од продавница
+      </p>
+      <p className="text-xs text-[#3D4F3D]/70 mt-1">
+        Ќе бидете контактирани кога нарачката ќе биде подготвена за преземање.
+      </p>
+    </>
   )}
 </div>
 
