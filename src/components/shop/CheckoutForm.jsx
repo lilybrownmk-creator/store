@@ -329,10 +329,6 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
       <p className="text-xs text-[#3D4F3D]/70 mt-1">
         Нарачките се доставуваат во рок од 2–3 работни дена.
       </p>
-    </>
-  ) : (
-    
-  )}
 </div>
 
           <Separator className="bg-[#3D4F3D]/10" />
