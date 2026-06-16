@@ -5,7 +5,7 @@ export const translations = {
   EN: {
     // Header / Nav
     menu:            'MENU',
-    tagline:         'Pick · Collect · Personal delivery · across North Macedonia · twice a week',
+    tagline:         'Personal delivery across North Macedonia ,
     search_ph:       'Search products...',
     no_results:      'No results for',
     clear_search:    'Clear search',
@@ -191,7 +191,7 @@ export const translations = {
   MK: {
     // Header / Nav
     menu:            'МЕНИ',
-    tagline:         'Преземи · Колекционирај · Лична достава · низ цела Македонија · двапати неделно',
+    tagline:         'Лична достава низ цела Македонија ,
     search_ph:       'Пребарај производи...',
     no_results:      'Нема резултати за',
     clear_search:    'Исчисти пребарување',
