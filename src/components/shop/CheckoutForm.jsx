@@ -323,26 +323,6 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
             )}
           </div>
 
-          {/* Date selection */}
-          <div className="space-y-3">
-            <Label className="text-[10px] text-[#3D4F3D]/70 tracking-wider flex items-center gap-2">
-              <Calendar className="w-3 h-3" />
-              {deliveryMethod === 'pickup' ? t('pickup_date') : t('delivery_date')}
-            </Label>
-            <Select value={deliveryDate} onValueChange={setDeliveryDate}>
-              <SelectTrigger className="bg-white border-[#3D4F3D]/20 rounded-none h-11 text-[#3D4F3D] focus:border-[#3D4F3D] focus:ring-0">
-                <SelectValue placeholder={t('select_date')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value={format(dates.tuesday, 'yyyy-MM-dd')}>
-                  Tuesday, {format(dates.tuesday, 'MMMM d')}
-                </SelectItem>
-                <SelectItem value={format(dates.friday, 'yyyy-MM-dd')}>
-                  Friday, {format(dates.friday, 'MMMM d')}
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
 
           <Separator className="bg-[#3D4F3D]/10" />
 
