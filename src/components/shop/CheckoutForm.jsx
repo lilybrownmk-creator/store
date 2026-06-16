@@ -316,7 +316,6 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
                 <p className="text-[10px] text-[#3D4F3D]/70 tracking-wider mb-1">{t('pickup_location')}</p>
                 <p className="text-sm text-[#3D4F3D]">{t('budapest_store')}</p>
                 <p className="text-xs text-[#3D4F3D]/60">19, Luj Paster str, Skopje 1000</p>
-                <p className="text-xs text-[#3D4F3D]/60 mt-1">{t('pickup_note')}</p>
               </div>
             )}
           </div>
