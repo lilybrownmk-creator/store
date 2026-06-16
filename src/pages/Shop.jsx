@@ -772,7 +772,7 @@ export default function Shop() {
                   rel="noopener noreferrer"
                   className="block text-white/80 hover:text-white text-center text-[13px] md:text-[18px] font-light normal-case tracking-[0.04em] md:tracking-[0.15em] px-1 md:px-2 py-0 -mt-5 md:mt-1 transition-colors"
                 >
-                  Luj Paster 19, 1000 Skopje <MapPin className="inline-block w-4 h-4 md:w-5 md:h-5 ml-1 mb-0.5 text-white/70" />
+                  str.Luj Paster 19, 1000 Skopje <MapPin className="inline-block w-4 h-4 md:w-5 md:h-5 ml-1 mb-0.5 text-white/70" />
                   <span className="block text-white/60 text-[10px] md:text-sm tracking-wide mt-0.5">{t('tagline')}</span>
                 </a>
               </div>
