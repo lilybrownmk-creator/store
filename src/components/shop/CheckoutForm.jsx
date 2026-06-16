@@ -322,7 +322,6 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
 
           <div className="bg-white p-3 border border-[#3D4F3D]/10">
   {deliveryMethod === 'delivery' ? (
-    <>
       <p className="text-sm text-[#3D4F3D] font-medium">
         Достава
       </p>
