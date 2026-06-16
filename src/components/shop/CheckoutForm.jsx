@@ -433,7 +433,7 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
       const order = await createOrder({
         ...formData,
         delivery_method: deliveryMethod,
-        delivery_date: deliveryDate,
+        delivery_date: null,
         delivery_address:
           deliveryMethod === 'pickup'
             ? '19, Luj Paster str, Skopje 1000'
