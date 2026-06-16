@@ -322,12 +322,24 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
 
           <div className="bg-white p-3 border border-[#3D4F3D]/10">
   {deliveryMethod === 'delivery' ? (
+    <>
       <p className="text-sm text-[#3D4F3D] font-medium">
         Достава
       </p>
       <p className="text-xs text-[#3D4F3D]/70 mt-1">
         Нарачките се доставуваат во рок од 2–3 работни дена.
       </p>
+    </>
+  ) : (
+    <>
+      <p className="text-sm text-[#3D4F3D] font-medium">
+        Преземање од продавница
+      </p>
+      <p className="text-xs text-[#3D4F3D]/70 mt-1">
+        Ќе бидете контактирани кога нарачката ќе биде подготвена за преземање.
+      </p>
+    </>
+  )}
 </div>
 
           <Separator className="bg-[#3D4F3D]/10" />
