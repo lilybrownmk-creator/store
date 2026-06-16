@@ -7,7 +7,6 @@ import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@/components/ui/separator'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Loader2, CheckCircle, Store, Truck, Calendar, CreditCard, ArrowLeft } from 'lucide-react'
-import { format, addDays, nextTuesday, nextFriday } from 'date-fns'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
@@ -17,15 +16,6 @@ import { formatPrice } from '@/lib/utils'
 import { useT } from '@/lib/i18n'
 import PWAInstallPrompt from '@/components/shop/PWAInstallPrompt'
 
-// ── Delivery date helpers ────────────────────────────────────────────────────
-function getDeliveryDates() {
-  const today = new Date()
-  let tue = nextTuesday(today)
-  let fri = nextFriday(today)
-  if (tue <= today) tue = addDays(tue, 7)
-  if (fri <= today) fri = addDays(fri, 7)
-  return { tuesday: tue, friday: fri }
-}
 
 // ── Load Revolut embed script once ──────────────────────────────────────────
 function useRevolutScript() {
