@@ -66,7 +66,6 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
     }
   }, [])
 
-  const dates      = getDeliveryDates()
   const subtotal   = cart.reduce((s, i) => s + i.price * i.quantity, 0)
   const deliveryFee = deliveryMethod === 'pickup' ? 0 : (subtotal >= 9000 ? 0 : 370)
   const total      = subtotal + deliveryFee
