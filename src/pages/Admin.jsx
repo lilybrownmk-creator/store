@@ -417,7 +417,7 @@ export default function Admin() {
                                   <p className="text-xs text-stone-500">{order.customer_phone}</p>
                                 </div>
                               </TableCell>
-                             <TableCell>
+<TableCell>
   <div className="text-xs space-y-1">
     {order.items?.map((item, index) => (
       <div key={index}>
@@ -426,8 +426,10 @@ export default function Admin() {
     ))}
   </div>
 </TableCell>
-                              <TableCell className="font-medium">{Number(order.total).toFixed(0)} ден </TableCell>
-                              <TableCell>
+
+<TableCell className="font-medium">
+  {Number(order.total).toFixed(0)} ден
+</TableCell>
                                 <Badge className={order.payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}>
                                   {order.payment_status}
                                 </Badge>
