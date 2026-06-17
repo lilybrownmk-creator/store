@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -135,7 +135,9 @@ export default function Admin() {
     queryFn: fetchAllOrders,
   })
 
-  console.log(orders)
+ useEffect(() => {
+  console.log('ORDERS DATA:', orders)
+}, [orders])
 
   const createMutation = useMutation({
     mutationFn: createProduct,
