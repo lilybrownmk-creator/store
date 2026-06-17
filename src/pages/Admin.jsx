@@ -135,7 +135,7 @@ export default function Admin() {
     queryFn: fetchAllOrders,
   })
 
-  const { data: orders =
+  console.log(orders)
 
   const createMutation = useMutation({
     mutationFn: createProduct,
