@@ -417,6 +417,7 @@ export default function Admin() {
                                   <p className="text-xs text-stone-500">{order.customer_phone}</p>
                                 </div>
                               <TableCell>
+                                 <TableCell>
   <div className="text-xs space-y-1">
     {order.items?.map((item, index) => (
       <div key={index}>
