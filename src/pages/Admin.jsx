@@ -135,6 +135,8 @@ export default function Admin() {
     queryFn: fetchAllOrders,
   })
 
+  const { data: orders =
+
   const createMutation = useMutation({
     mutationFn: createProduct,
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['admin-products'] }); setProductDialog({ open: false, product: null }); toast.success('Product created') },
