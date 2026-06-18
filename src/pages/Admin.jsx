@@ -1,3 +1,5 @@
+document.title = 'ADMIN TEST 999'
+console.log('ADMIN TEST 999')
 import React, { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
