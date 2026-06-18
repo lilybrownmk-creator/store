@@ -135,9 +135,7 @@ export default function Admin() {
     queryFn: fetchAllOrders,
   })
 
- useEffect(() => {
-  console.log('ORDERS DATA:', orders)
-}, [orders])
+console.log('ADMIN VERSION 999', orders)
 
   const createMutation = useMutation({
     mutationFn: createProduct,
