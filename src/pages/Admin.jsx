@@ -253,7 +253,7 @@ export default function Admin() {
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-stone-900">Dashboard</h1>
+            <h1 className="text-2xl font-semibold text-stone-900">Dashboard MK STORE</h1>
             <p className="text-stone-500 text-sm">Zielinski & Rozen — Macedonia</p>
           </div>
           <div className="flex items-center gap-2">
