@@ -772,7 +772,7 @@ export default function Shop() {
                   rel="noopener noreferrer"
                   className="block text-white/80 hover:text-white text-center text-[13px] md:text-[18px] font-light normal-case tracking-[0.04em] md:tracking-[0.15em] px-1 md:px-2 py-0 -mt-5 md:mt-1 transition-colors"
                 >
-                  str.Luj Paster 19, 1000 Skopje <MapPin className="inline-block w-4 h-4 md:w-5 md:h-5 ml-1 mb-0.5 text-white/70" />
+                  str.kaj bikot 19, 1000 Skopje <MapPin className="inline-block w-4 h-4 md:w-5 md:h-5 ml-1 mb-0.5 text-white/70" />
                   <span className="block text-white/60 text-[10px] md:text-sm tracking-wide mt-0.5">{t('tagline')}</span>
                 </a>
               </div>
@@ -1119,7 +1119,7 @@ export default function Shop() {
           <div className="text-center">
             <img src="https://mbbxrfjgqvximrbumbop.supabase.co/storage/v1/object/public/public/images/zrlogo_clean.png" alt="PERFUMERIE ZIELINSKI & ROZEN" className="h-[72px] w-auto mx-auto brightness-0 invert" />
             <a href="https://share.google/sFY2iroYnKXttXUwZ" target="_blank" rel="noopener noreferrer" className="block text-white/80 hover:text-white text-[10px] font-light normal-case tracking-wide -mt-1.5 transition-colors">
-              Skopje · 19, Luj Paster str, 1000 <MapPin className="inline-block w-2.5 h-2.5 ml-0.5 mb-0.5 text-white/70" />
+              Skopje · 19, kaj bikot str, 1000 <MapPin className="inline-block w-2.5 h-2.5 ml-0.5 mb-0.5 text-white/70" />
               <span className="block text-white/50 text-[9px] tracking-wide mt-0.5">{t('tagline')}</span>
             </a>
           </div>
@@ -1135,7 +1135,7 @@ export default function Shop() {
           <div className="text-center">
             <img src="https://mbbxrfjgqvximrbumbop.supabase.co/storage/v1/object/public/public/images/zrlogo_clean.png" alt="PERFUMERIE ZIELINSKI & ROZEN" className="h-14 w-auto mx-auto brightness-0 invert" />
             <a href="https://share.google/sFY2iroYnKXttXUwZ" target="_blank" rel="noopener noreferrer" className="block text-white/80 hover:text-white text-[11px] font-light tracking-wide -mt-1 transition-colors">
-              Skopje · 19, Luj Paster str, 1000 <MapPin className="inline-block w-3 h-3 ml-0.5 mb-0.5 text-white/70" />
+              Skopje · 19, kaj bikot str, 1000 <MapPin className="inline-block w-3 h-3 ml-0.5 mb-0.5 text-white/70" />
               <span className="block text-white/50 text-[9px] tracking-wide mt-0.5">{t('tagline')}</span>
             </a>
           </div>
@@ -1186,7 +1186,7 @@ export default function Shop() {
                   {openLegal === 'impressum' && (<>
                     <p className="text-[9px] tracking-[0.2em] text-white/40 uppercase mb-2">Impressum</p>
                     <p><strong className="text-white/60">Operator:</strong> SANE STUDIO KFT (North Macedonia branch)</p>
-                    <p><strong className="text-white/60">Address:</strong>  Luj Paster kaj bikot, North Macedonia</p>
+                    <p><strong className="text-white/60">Address:</strong>  kaj bikot kaj bikot, North Macedonia</p>
                     <p><strong className="text-white/60">E-mail:</strong> Skopje@springsioux.com</p>
                     <p><strong className="text-white/60">Phone:</strong> +389 71 310 123</p>
                     <p><strong className="text-white/60">Hosting:</strong> Vercel Inc., 340 Pine St #4B, San Francisco, CA 94104, USA</p>
@@ -1195,7 +1195,7 @@ export default function Shop() {
 
                   {openLegal === 'terms' && (<>
                     <p className="text-[9px] tracking-[0.2em] text-white/40 uppercase mb-2">Terms & Conditions</p>
-                    <p><strong className="text-white/60">1. Seller</strong><br />SANE STUDIO KFT · 19, Luj Paster str, Skopje 1000 · Skopje@springsioux.com</p>
+                    <p><strong className="text-white/60">1. Seller</strong><br />SANE STUDIO KFT · 19, kaj bikot str, Skopje 1000 · Skopje@springsioux.com</p>
                     <p><strong className="text-white/60">2. Orders</strong><br />Orders are placed by adding products to the bag and submitting the checkout form. Order confirmation is sent by e-mail within 48 hours.</p>
                     <p><strong className="text-white/60">3. Payment & Delivery</strong><br />Payment is accepted via Revolut transfer. Delivery is available in Skopje and surrounding area twice a week (pick-up or personal delivery).</p>
                     <p><strong className="text-white/60">4. Right of Withdrawal</strong><br />You may withdraw from a purchase within 14 days of receipt without giving reasons. Notify us at Skopje@springsioux.com. Refunds are issued within 14 days of withdrawal.<br /><em>Exception:</em> Opened/unsealed hygiene or cosmetic products (perfume, body cream, hand cream, etc.) are excluded from withdrawal for hygiene reasons.</p>
