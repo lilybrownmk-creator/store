@@ -114,7 +114,18 @@ function ProductForm({ product, onSubmit, onClose }) {
 
 // ─── Admin Page ──────────────────────────────────────────────
 export default function Admin() {
-  throw new Error('ADMIN FILE LOADED')
+  alert('ADMIN FILE LOADED')
+
+  return (
+    <div style={{
+      background: 'red',
+      color: 'white',
+      fontSize: '48px',
+      padding: '50px'
+    }}>
+      ADMIN TEST 999999
+    </div>
+  )
   const navigate = useNavigate()
   const [search, setSearch]               = useState('')
   const [productDialog, setProductDialog] = useState({ open: false, product: null })
@@ -255,8 +266,9 @@ export default function Admin() {
   <div style={{
     background: 'red',
     color: 'white',
-    padding: '40px',
-    fontSize: '40px'
+    fontSize: '48px',
+    padding: '50px',
+    minHeight: '100vh'
   }}>
     ADMIN TEST 999999
   </div>
