@@ -114,18 +114,7 @@ function ProductForm({ product, onSubmit, onClose }) {
 
 // ─── Admin Page ──────────────────────────────────────────────
 export default function Admin() {
-  alert('ADMIN FILE LOADED')
-
-  return (
-    <div style={{
-      background: 'red',
-      color: 'white',
-      fontSize: '48px',
-      padding: '50px'
-    }}>
-      ADMIN TEST 999999
-    </div>
-  )
+  throw new Error('ADMIN FILE LOADED')
   const navigate = useNavigate()
   const [search, setSearch]               = useState('')
   const [productDialog, setProductDialog] = useState({ open: false, product: null })
@@ -263,20 +252,11 @@ export default function Admin() {
   const lowStock       = products.filter(p => p.stock > 0 && p.stock < 5).length
 
   return (
-  <div style={{
-    background: 'red',
-    color: 'white',
-    fontSize: '48px',
-    padding: '50px',
-    minHeight: '100vh'
-  }}>
-    ADMIN TEST 999999
-  </div>
-)
+    <div className="min-h-screen bg-stone-50 p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-stone-900">Dashboard</h1>
+            <h1 className="text-2xl font-semibold text-stone-900">   ADMIN TEST 999999 </h1>
             <p className="text-stone-500 text-sm">Zielinski & Rozen — Mk</p>
           </div>
           <div className="flex items-center gap-2">
