@@ -1,4 +1,4 @@
-document.title = 'ADMIN TEST 999'
+alert('ADMIN FILE LOADED')
 console.log('ADMIN TEST 999')
 import React, { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
