@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -35,36 +35,6 @@ const CATEGORIES = [
   'Liquid soap', 'Solid soap', 'Candle', 'Diffuser',
   'Dead sea salt', 'Giftbox', 'Other',
 ]
-function parseOrderItems(items) {
-  if (Array.isArray(items)) return items
-  if (typeof items !== 'string') return []
-
-  try {
-    const parsed = JSON.parse(items)
-    return Array.isArray(parsed) ? parsed : []
-  } catch {
-    return []
-  }
-}
-
-function OrderItemsSummary({ items }) {
-  const orderItems = parseOrderItems(items)
-
-  if (orderItems.length === 0) {
-    return <span className="text-stone-400 text-sm">No items</span>
-  }
-
-  return (
-    <div className="min-w-48 max-w-xs space-y-1">
-      {orderItems.map((item, idx) => (
-        <div key={`${item.product_id || item.product_name || idx}-${idx}`} className="text-sm leading-snug">
-          <span className="font-medium text-stone-800">{item.product_name || item.name || 'Product'}</span>
-          <span className="text-stone-500"> x{item.quantity || 1}</span>
-        </div>
-      ))}
-    </div>
-  )
-}
 
 // ─── Product Form ────────────────────────────────────────────
 function ProductForm({ product, onSubmit, onClose }) {
@@ -164,8 +134,6 @@ export default function Admin() {
     queryKey: ['admin-orders'],
     queryFn: fetchAllOrders,
   })
-
-console.log('ADMIN VERSION 999', orders)
 
   const createMutation = useMutation({
     mutationFn: createProduct,
@@ -285,7 +253,7 @@ console.log('ADMIN VERSION 999', orders)
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-stone-900">Ger4eZverce</h1>
+            <h1 className="text-2xl font-semibold text-stone-900">Dashboard</h1>
             <p className="text-stone-500 text-sm">Zielinski & Rozen — Macedonia</p>
           </div>
           <div className="flex items-center gap-2">
@@ -449,7 +417,7 @@ console.log('ADMIN VERSION 999', orders)
                                   <p className="text-xs text-stone-500">{order.customer_phone}</p>
                                 </div>
                               </TableCell>
-       <TableCell><OrderItemsSummary items={order.items} /></TableCell>
+                              <TableCell>{order.items?.length || 0} items</TableCell>
                               <TableCell className="font-medium">€{Number(order.total).toFixed(2)}</TableCell>
                               <TableCell>
                                 <Badge className={order.payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}>
