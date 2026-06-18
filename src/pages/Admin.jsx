@@ -252,7 +252,15 @@ export default function Admin() {
   const lowStock       = products.filter(p => p.stock > 0 && p.stock < 5).length
 
   return (
-    <div className="min-h-screen bg-stone-50 p-4 sm:p-6 lg:p-8">
+  <div style={{
+    background: 'red',
+    color: 'white',
+    padding: '40px',
+    fontSize: '40px'
+  }}>
+    ADMIN TEST 999999
+  </div>
+)
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <div>
