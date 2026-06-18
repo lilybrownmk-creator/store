@@ -1,5 +1,3 @@
-alert('ADMIN FILE LOADED')
-console.log('ADMIN TEST 999')
 import React, { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
@@ -114,7 +112,6 @@ function ProductForm({ product, onSubmit, onClose }) {
 
 // ─── Admin Page ──────────────────────────────────────────────
 export default function Admin() {
-  throw new Error('ADMIN FILE LOADED')
   const navigate = useNavigate()
   const [search, setSearch]               = useState('')
   const [productDialog, setProductDialog] = useState({ open: false, product: null })
@@ -256,8 +253,8 @@ export default function Admin() {
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-stone-900">   ADMIN TEST 999999 </h1>
-            <p className="text-stone-500 text-sm">Zielinski & Rozen — Mk</p>
+            <h1 className="text-2xl font-semibold text-stone-900">Dashboard</h1>
+            <p className="text-stone-500 text-sm">Zielinski & Rozen — Macedonia</p>
           </div>
           <div className="flex items-center gap-2">
             <input ref={csvInputRef} type="file" accept=".csv" className="hidden" onChange={handleCsvImport} />
