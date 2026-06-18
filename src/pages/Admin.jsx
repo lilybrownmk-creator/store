@@ -35,6 +35,36 @@ const CATEGORIES = [
   'Liquid soap', 'Solid soap', 'Candle', 'Diffuser',
   'Dead sea salt', 'Giftbox', 'Other',
 ]
+function parseOrderItems(items) {
+  if (Array.isArray(items)) return items
+  if (typeof items !== 'string') return []
+
+  try {
+    const parsed = JSON.parse(items)
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
+function OrderItemsSummary({ items }) {
+  const orderItems = parseOrderItems(items)
+
+  if (orderItems.length === 0) {
+    return <span className="text-stone-400 text-sm">No items</span>
+  }
+
+  return (
+    <div className="min-w-48 max-w-xs space-y-1">
+      {orderItems.map((item, idx) => (
+        <div key={`${item.product_id || item.product_name || idx}-${idx}`} className="text-sm leading-snug">
+          <span className="font-medium text-stone-800">{item.product_name || item.name || 'Product'}</span>
+          <span className="text-stone-500"> x{item.quantity || 1}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
 
 // ─── Product Form ────────────────────────────────────────────
 function ProductForm({ product, onSubmit, onClose }) {
@@ -419,11 +449,7 @@ console.log('ADMIN VERSION 999', orders)
                                   <p className="text-xs text-stone-500">{order.customer_phone}</p>
                                 </div>
                               </TableCell>
-                              <TableCell>
-  <pre style={{ fontSize: '10px' }}>
-    {JSON.stringify(order.items, null, 2)}
-  </pre>
-</TableCell>
+       <TableCell><OrderItemsSummary items={order.items} /></TableCell>
                               <TableCell className="font-medium">€{Number(order.total).toFixed(2)}</TableCell>
                               <TableCell>
                                 <Badge className={order.payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}>
