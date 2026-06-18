@@ -1186,7 +1186,7 @@ export default function Shop() {
                   {openLegal === 'impressum' && (<>
                     <p className="text-[9px] tracking-[0.2em] text-white/40 uppercase mb-2">Impressum</p>
                     <p><strong className="text-white/60">Operator:</strong> SANE STUDIO KFT (North Macedonia branch)</p>
-                    <p><strong className="text-white/60">Address:</strong> 19, Luj Paster str, Skopje 1000, North Macedonia</p>
+                    <p><strong className="text-white/60">Address:</strong>  Luj Paster kaj bikot, North Macedonia</p>
                     <p><strong className="text-white/60">E-mail:</strong> Skopje@springsioux.com</p>
                     <p><strong className="text-white/60">Phone:</strong> +389 71 310 123</p>
                     <p><strong className="text-white/60">Hosting:</strong> Vercel Inc., 340 Pine St #4B, San Francisco, CA 94104, USA</p>
