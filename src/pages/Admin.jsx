@@ -114,6 +114,7 @@ function ProductForm({ product, onSubmit, onClose }) {
 
 // ─── Admin Page ──────────────────────────────────────────────
 export default function Admin() {
+  throw new Error('ADMIN FILE LOADED')
   const navigate = useNavigate()
   const [search, setSearch]               = useState('')
   const [productDialog, setProductDialog] = useState({ open: false, product: null })
