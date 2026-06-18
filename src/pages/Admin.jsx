@@ -421,7 +421,11 @@ export default function Admin() {
                                   <p className="text-xs text-stone-500">{order.customer_phone}</p>
                                 </div>
                               </TableCell>
-                              <TableCell>   <div className="text-xs space-y-1 text-red-600">     TEST ITEM COLUMN     {order.items?.map((item, index) => (       <div key={index}>         {item.product_name} × {item.quantity}       </div>     ))}   </div> </TableCell>
+                              <TableCell>
+  <pre style={{ fontSize: '10px' }}>
+    {JSON.stringify(order.items, null, 2)}
+  </pre>
+</TableCell>
                               <TableCell className="font-medium">€{Number(order.total).toFixed(2)}</TableCell>
                               <TableCell>
                                 <Badge className={order.payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}>
