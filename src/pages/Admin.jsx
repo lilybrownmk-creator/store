@@ -256,7 +256,7 @@ export default function Admin() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-semibold text-stone-900">Dashboard</h1>
-            <p className="text-stone-500 text-sm">Zielinski & Rozen — Macedonia</p>
+            <p className="text-stone-500 text-sm">Zielinski & Rozen — Mk</p>
           </div>
           <div className="flex items-center gap-2">
             <input ref={csvInputRef} type="file" accept=".csv" className="hidden" onChange={handleCsvImport} />
