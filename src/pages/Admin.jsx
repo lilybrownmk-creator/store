@@ -439,7 +439,7 @@ export default function Admin() {
       </div>
     ))}
   </div></TableCell>
-                              <TableCell className="font-medium">€{Number(order.total).toFixed(2)}</TableCell>
+                              <TableCell className="font-medium">{Number(order.total).toLocaleString('mk-MK')} ден</TableCell>
                               <TableCell>
                                 <Badge className={order.payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}>
                                   {order.payment_status}
