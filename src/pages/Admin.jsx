@@ -411,12 +411,27 @@ export default function Admin() {
                           return (
                             <TableRow key={order.id}>
                               <TableCell className="font-mono text-sm">{order.order_number}</TableCell>
-                              <TableCell>
-                                <div>
-                                  <p className="font-medium">{order.customer_name}</p>
-                                  <p className="text-xs text-stone-500">{order.customer_phone}</p>
-                                </div>
-                              </TableCell>
+<TableCell>
+  <div className="space-y-1">
+    <p className="font-medium">{order.customer_name}</p>
+
+    <p className="text-xs text-stone-500">
+      {order.customer_phone}
+    </p>
+
+    <p className="text-xs text-stone-500">
+      {order.customer_email}
+    </p>
+
+    <p className="text-xs text-stone-500">
+      {order.delivery_address}
+    </p>
+
+    <p className="text-xs text-stone-500">
+      {order.delivery_city} {order.delivery_postal_code}
+    </p>
+  </div>
+</TableCell>
                               <TableCell>{order.items?.length || 0} items</TableCell>
                               <TableCell className="font-medium">€{Number(order.total).toFixed(2)}</TableCell>
                               <TableCell>
