@@ -275,7 +275,7 @@ export default function Admin() {
             { label: 'Products',       value: products.length,         icon: Package,      bg: 'bg-blue-100',   ic: 'text-blue-600' },
             { label: 'Low Stock',      value: lowStock,                icon: AlertCircle,  bg: 'bg-amber-100',  ic: 'text-amber-600' },
             { label: 'Pending Orders', value: pendingOrders,           icon: ShoppingCart, bg: 'bg-purple-100', ic: 'text-purple-600' },
-            { label: 'Revenue',        value: `€${totalRevenue.toFixed(0)}`, icon: Euro,   bg: 'bg-green-100',  ic: 'text-green-600' },
+            { label: 'Revenue', value: `${Math.round(totalRevenue).toLocaleString('mk-MK')} ден`, icon: Euro, bg: 'bg-green-100', ic: 'text-green-600' },
           ].map(stat => (
             <Card key={stat.label}>
               <CardContent className="p-4">
