@@ -343,7 +343,7 @@ export default function Admin() {
                             <TableCell className="font-medium max-w-xs truncate">{product.name}</TableCell>
                             <TableCell className="text-stone-500 text-sm">{product.sku || '-'}</TableCell>
                             <TableCell><Badge variant="secondary">{product.category}</Badge></TableCell>
-                            <TableCell>€{Number(product.price).toFixed(2)}</TableCell>
+                            <TableCell>{Number(product.price).toLocaleString('mk-MK')} ден</TableCell>
                             <TableCell>
                               <span className={product.stock <= 0 ? 'text-red-600' : product.stock < 5 ? 'text-amber-600' : ''}>
                                 {product.stock}
