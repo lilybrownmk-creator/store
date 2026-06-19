@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Package, ShoppingCart, Euro, AlertCircle, Plus, Pencil, Search, Clock, Truck, CheckCircle2, XCircle, Upload, LogOut } from 'lucide-react'
+import { Package, ShoppingCart, Euro , Wallet, AlertCircle, Plus, Pencil, Search, Clock, Truck, CheckCircle2, XCircle, Upload, LogOut } from 'lucide-react'
 import { format } from 'date-fns'
 import { toast } from 'sonner'
 import { supabase } from '@/lib/supabaseClient'
@@ -275,7 +275,7 @@ export default function Admin() {
             { label: 'Products',       value: products.length,         icon: Package,      bg: 'bg-blue-100',   ic: 'text-blue-600' },
             { label: 'Low Stock',      value: lowStock,                icon: AlertCircle,  bg: 'bg-amber-100',  ic: 'text-amber-600' },
             { label: 'Pending Orders', value: pendingOrders,           icon: ShoppingCart, bg: 'bg-purple-100', ic: 'text-purple-600' },
-            { label: 'Revenue', value: `${Math.round(totalRevenue).toLocaleString('mk-MK')} ден`, icon: Euro, bg: 'bg-green-100', ic: 'text-green-600' },
+            { label: 'Revenue', value: `${Math.round(totalRevenue).toLocaleString('mk-MK')} ден`, icon: Wallet, bg: 'bg-green-100', ic: 'text-green-600' },
           ].map(stat => (
             <Card key={stat.label}>
               <CardContent className="p-4">
