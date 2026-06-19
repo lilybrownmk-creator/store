@@ -432,7 +432,13 @@ export default function Admin() {
     </p>
   </div>
 </TableCell>
-                              <TableCell>{order.items?.length || 0} items</TableCell>
+                              <TableCell><div className="space-y-1">
+    {order.items?.map((item, i) => (
+      <div key={i} className="text-xs">
+        {item.product_name} × {item.quantity}
+      </div>
+    ))}
+  </div></TableCell>
                               <TableCell className="font-medium">€{Number(order.total).toFixed(2)}</TableCell>
                               <TableCell>
                                 <Badge className={order.payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}>
