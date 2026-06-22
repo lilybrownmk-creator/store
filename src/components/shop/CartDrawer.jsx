@@ -12,10 +12,10 @@ export default function CartDrawer({ open, onClose, cart, onUpdateQuantity, onRe
   const t = useT()
 
   const subtotal      = cart.reduce((s, item) => s + item.price * item.quantity, 0)
-  const deliveryFee   = subtotal >= 4000 ? 0 : 370
+  const deliveryFee   = subtotal >= 3000 ? 0 : 170
   const total         = subtotal + deliveryFee
   const totalQty      = cart.reduce((s, item) => s + item.quantity, 0)
-  const freeDeliveryPct = Math.min((subtotal / 4000) * 100, 100)
+  const freeDeliveryPct = Math.min((subtotal / 3000) * 100, 100)
 
   return (
     <Sheet open={open} onOpenChange={onClose}>
@@ -86,7 +86,7 @@ export default function CartDrawer({ open, onClose, cart, onUpdateQuantity, onRe
 
             <div className="p-6 border-t border-[#3D4F3D]/10 space-y-4 bg-white">
               {/* Free delivery progress */}
-              {subtotal < 4000 && subtotal > 0 && (
+              {subtotal < 3000 && subtotal > 0 && (
                 <div className="space-y-1.5">
                   <div className="w-full h-0.5 bg-[#3D4F3D]/10 rounded-full overflow-hidden">
                     <div
@@ -95,11 +95,11 @@ export default function CartDrawer({ open, onClose, cart, onUpdateQuantity, onRe
                     />
                   </div>
                   <p className="text-[10px] text-[#3D4F3D]/50 tracking-wider">
-                    {t('away_free', formatPrice(4000 - subtotal))}
+                    {t('away_free', formatPrice(3000 - subtotal))}
                   </p>
                 </div>
               )}
-              {subtotal >= 4000 && (
+              {subtotal >= 3000 && (
                 <p className="text-[10px] text-[#3D4F3D] tracking-wider">{t('free_unlocked')}</p>
               )}
 
