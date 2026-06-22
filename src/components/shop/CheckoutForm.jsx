@@ -433,6 +433,11 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
               </span>
               <span>{deliveryFee === 0 ? t('free') : formatPrice(deliveryFee)}</span>
             </div>
+            {deliveryMethod === 'delivery' && (
+  <p className="text-[10px] text-[#3D4F3D]/50 italic">
+    * Цената за достава може да варира во зависност од локацијата и тарифникот на Карго Експрес. Конечната цена ќе биде потврдена при испорака.
+  </p>
+)}
             <Separator className="bg-[#3D4F3D]/10" />
             <div className="flex justify-between text-[#3D4F3D] font-medium">
               <span className="tracking-wider text-xs">{t('total')}</span>
