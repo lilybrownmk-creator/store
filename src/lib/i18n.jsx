@@ -263,7 +263,7 @@ export const translations = {
     away_free:      (amt) => `${amt} до бесплатна достава`,
     free_unlocked:  '✓ Бесплатна достава одблокирана',
     subtotal:       'МЕЃУЗБИР',
-    delivery:       'ДОСТАВА',
+    delivery:       'ДОСТАВА (СПОРЕД ТАРИФАТА НА КАРГО ЕКСПРЕС',
     free:           'БЕСПЛАТНО',
     total:          'ВКУПНО',
     checkout:       'НАРАЧАЈ',
