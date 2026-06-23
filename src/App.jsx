@@ -1,3 +1,14 @@
+import MygpmTest from "./components/MygpmTest"
+
+function App() {
+  return (
+    <div>
+      <MygpmTest />
+    </div>
+  )
+}
+
+export default App
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClientProvider } from '@tanstack/react-query'
