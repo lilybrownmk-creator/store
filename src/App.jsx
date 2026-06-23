@@ -14,6 +14,7 @@ import AdminLogin        from '@/pages/AdminLogin'
 import AdminGuard        from '@/components/AdminGuard'
 import OrderConfirmation from '@/pages/OrderConfirmation'
 import ProductDetail from '@/pages/ProductDetail'
+import MygpmTest from '@/pages/MygpmTest'
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="/orders"   element={<MyOrders />} />
           <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/test-api" element={<MygpmTest />} />
 
           {/* ── Admin ── */}
           <Route path="/admin/login" element={<AdminLogin />} />
