@@ -1,4 +1,4 @@
-Ova se imam vo app : import React from 'react' 
+import React from 'react' 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
