@@ -1,3 +1,13 @@
+export default function handler(req, res) {
+  return res.status(200).json({
+    ok: true,
+    env_check: {
+      supabase_url: process.env.SUPABASE_URL ? true : false,
+      service_role: process.env.SUPABASE_SERVICE_ROLE_KEY ? true : false,
+      mygpm_key: process.env.MYGPM_API_KEY ? true : false
+    }
+  })
+}
 import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient(
