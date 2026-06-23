@@ -5,7 +5,6 @@ import { Toaster } from 'sonner'
 import { queryClient } from '@/lib/queryClient'
 import { LanguageProvider } from '@/lib/i18n'
 
-import MygpmTest from '@/pages/MygpmTest'
 import Shop              from '@/pages/Shop'
 import Wishlist          from '@/pages/Wishlist'
 import BundleBuilder     from '@/pages/BundleBuilder'
@@ -29,8 +28,7 @@ export default function App() {
           <Route path="/orders"   element={<MyOrders />} />
           <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
           <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/test-api" element={<MygpmTest />} />
-
+          
           {/* ── Admin ── */}
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route
