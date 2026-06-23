@@ -16,16 +16,9 @@ export default async function handler(req, res) {
   try {
     const { ean, stock } = req.body
 
-    if (!ean || stock === undefined) {
-      return res.status(400).json({
-        ok: false,
-        error: 'ean and stock required'
-      })
-    }
-
     const { data, error } = await supabase
       .from('products')
-      .update({ stock })
+      .update({ stock: Number(stock) })
       .eq('ean', ean)
       .select()
 
