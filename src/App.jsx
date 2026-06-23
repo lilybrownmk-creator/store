@@ -1,52 +1,40 @@
-import React from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { Toaster } from 'sonner'
-import { queryClient } from '@/lib/queryClient'
-import { LanguageProvider } from '@/lib/i18n'
-import MygpmTest from '@/pages/MygpmTest'
-import Shop              from '@/pages/Shop'
-import Wishlist          from '@/pages/Wishlist'
-import BundleBuilder     from '@/pages/BundleBuilder'
-import MyOrders          from '@/pages/MyOrders'
-import Admin             from '@/pages/Admin'
-import AdminLogin        from '@/pages/AdminLogin'
-import AdminGuard        from '@/components/AdminGuard'
-import OrderConfirmation from '@/pages/OrderConfirmation'
-import ProductDetail from '@/pages/ProductDetail'
+import { useState } from "react"
 
-export default function App() {
+export default function MygpmTest() {
+  const [result, setResult] = useState(null)
+  const [loading, setLoading] = useState(false)
+
+  const test = async () => {
+    setLoading(true)
+
+    const res = await fetch("/api/mygpm/stock", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": "test"
+      },
+      body: JSON.stringify({
+        ean: "7290116440439",
+        stock: 5,
+        price: 1300
+      })
+    })
+
+    const data = await res.json()
+    setResult(data)
+
+    setLoading(false)
+  }
+
   return (
-    <LanguageProvider>
-    <QueryClientProvider client={queryClient}>
-      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <Routes>
-          {/* ── Storefront ── */}
-          <Route path="/"         element={<Shop />} />
-          <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/bundle"   element={<BundleBuilder />} />
-          <Route path="/orders"   element={<MyOrders />} />
-          <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/test-api" element={<MygpmTest />} />
+    <div style={{ padding: 20 }}>
+      <h1>MYGPM TEST</h1>
 
-          {/* ── Admin ── */}
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route
-            path="/admin"
-            element={
-              <AdminGuard>
-                <Admin />
-              </AdminGuard>
-            }
-          />
+      <button onClick={test} disabled={loading}>
+        {loading ? "Testing..." : "Test API"}
+      </button>
 
-          {/* ── Fallback ── */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Router>
-      <Toaster position="bottom-right" richColors duration={1800} />
-    </QueryClientProvider>
-    </LanguageProvider>
+      <pre>{result && JSON.stringify(result, null, 2)}</pre>
+    </div>
   )
 }
