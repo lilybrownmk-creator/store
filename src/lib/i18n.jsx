@@ -383,8 +383,8 @@ export function LanguageProvider({ children }) {
     try {
       const saved = localStorage.getItem('zr_lang')
       // If saved lang is HU or RU from a previous session, fall back to EN
-      return (saved === 'EN' || saved === 'MK') ? saved : 'EN'
-    } catch { return 'EN' }
+      return (saved === 'EN' || saved === 'MK') ? saved : 'MK'
+    } catch { return 'MK' }
   })
   useEffect(() => { localStorage.setItem('zr_lang', lang) }, [lang])
   return (
