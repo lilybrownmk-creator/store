@@ -894,7 +894,7 @@ export default function Shop() {
                 key={cat.value}
                 data-active={filters.category === cat.value}
                 onClick={() => handleCategorySelect(cat.value)}
-                className={`text-xs tracking-widest transition-all pb-1 whitespace-nowrap flex-shrink-0 ${
+                className={`text-[11px] tracking-wide transition-all px-3 py-2 rounded-full whitespace-nowrap flex-shrink-0 ${   filters.category === cat.value     ? 'bg-[#3D4F3D] text-white'     : 'text-[#3D4F3D]/60 hover:bg-[#3D4F3D]/5 hover:text-[#3D4F3D]' }`}
                   filters.category === cat.value
                     ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
                     : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
@@ -911,7 +911,7 @@ export default function Shop() {
                 key={cat.value}
                 data-active={filters.category === cat.value}
                 onClick={() => handleCategorySelect(cat.value)}
-                className={`text-xs tracking-widest transition-all pb-1 whitespace-nowrap flex-shrink-0 ${
+                className={`text-[11px] tracking-wide transition-all px-3 py-2 rounded-full whitespace-nowrap flex-shrink-0 ${   filters.category === cat.value     ? 'bg-[#3D4F3D] text-white'     : 'text-[#3D4F3D]/60 hover:bg-[#3D4F3D]/5 hover:text-[#3D4F3D]' }`}
                   filters.category === cat.value
                     ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
                     : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
@@ -928,7 +928,7 @@ export default function Shop() {
                 key={cat.value}
                 data-active={filters.category === cat.value}
                 onClick={() => handleCategorySelect(cat.value)}
-                className={`text-xs tracking-widest transition-all pb-1 whitespace-nowrap flex-shrink-0 ${
+                className={`text-[11px] tracking-wide transition-all px-3 py-2 rounded-full whitespace-nowrap flex-shrink-0 ${   filters.category === cat.value     ? 'bg-[#3D4F3D] text-white'     : 'text-[#3D4F3D]/60 hover:bg-[#3D4F3D]/5 hover:text-[#3D4F3D]' }`}
                   filters.category === cat.value
                     ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
                     : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
