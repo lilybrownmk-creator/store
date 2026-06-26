@@ -27,25 +27,22 @@ const categories = [
 
 // Desktop nav: specific product types (like Budapest)
 const ALL_CATEGORIES = [
-  { value: 'all',               label: 'ALL PRODUCTS'  },
-  { value: 'bestsellers',       label: 'BEST SELLERS'  },
-  { value: 'Perfume',           label: 'PERFUMES'      },
-  { value: 'Hand Cream',        label: 'HAND CREAM'    },
-  { value: 'Body Cream',        label: 'BODY CREAM'    },
-  { value: 'Diffuser',          label: 'DIFFUSERS'     },
-  { value: 'Shower Gel',        label: 'SHOWER GEL'    },
-  { value: 'Body Scrub',        label: 'BODY SCRUB'    },
-  { value: 'Body Oil',          label: 'BODY OIL'      },
-  { value: 'Body Butter',       label: 'BODY BUTTER'   },
-  { value: 'Candle',            label: 'CANDLES'       },
-  { value: 'Liquid Soap',       label: 'LIQUID SOAP'   },
-  { value: 'Soap',              label: 'SOLID SOAP'    },
-  { value: 'Dead Sea Salt',     label: 'DEAD SEA SALT' },
-  { value: 'Shampoo',           label: 'SHAMPOO'       },
-  { value: 'Hair Conditioner',  label: 'CONDITIONER'   },
-  { value: 'Keratin Hair Mask', label: 'HAIR MASK'     },
-  { value: 'Self Care',         label: 'SELF CARE'     },
+  { value: 'all', label: 'ALL PRODUCTS' },
+  { value: 'bestsellers', label: 'BEST SELLERS' },
+  { value: 'Perfume', label: 'PERFUMES' },
+  { value: 'Home Scent', label: 'HOME SCENT' },
+  { value: 'Body', label: 'BODY' },
+  { value: 'Hands', label: 'HANDS' },
+  { value: 'Hair', label: 'HAIR' },
+  { value: 'Self Care', label: 'SELF CARE' },
 ]
+const SUBCATEGORIES = {
+  'Home Scent': ['Diffuser', 'Candle'],
+  Body: ['Body Cream', 'Body Oil', 'Body Butter', 'Body Scrub', 'Shower Gel'],
+  Hands: ['Hand Cream', 'Liquid Soap', 'Soap'],
+  Hair: ['Shampoo', 'Hair Conditioner', 'Keratin Hair Mask'],
+  'Self Care': ['Dead Sea Salt'],
+}
 
 // Used by AllProductsSections carousels + MENU browse-by
 const SECTION_CATS = [
