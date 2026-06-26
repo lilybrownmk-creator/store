@@ -967,26 +967,91 @@ export default function Shop() {
               </button>
             ))}
           </div>
-          {/* Desktop: all 17 tabs */}
-          <div ref={tabsContainerRef} className="hidden md:flex items-center gap-6 lg:gap-8 py-4 overflow-x-auto scrollbar-hide">
-            {ALL_CATEGORIES.map(cat => (
-              <button
-                key={cat.value}
-                data-active={filters.category === cat.value}
-                onClick={() => handleCategorySelect(cat.value)}
-                className={`text-xs tracking-widest transition-all pb-1 whitespace-nowrap flex-shrink-0 ${
-                  filters.category === cat.value
-                    ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
-                    : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
-                }`}
-              >
-                {catLabel(cat.value)}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+          {/* Desktop navigation */}
+<div className="hidden md:flex flex-col">
 
+  {/* Main navigation */}
+  <div
+    ref={tabsContainerRef}
+    className="flex items-center gap-6 lg:gap-8 py-4 overflow-x-auto scrollbar-hide"
+  >
+
+    <button
+      onClick={() => {
+        setActiveDesktopGroup(null)
+        handleCategorySelect('all')
+      }}
+      className={`text-xs tracking-widest pb-1 whitespace-nowrap ${
+        filters.category === 'all'
+          ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
+          : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
+      }`}
+    >
+      ALL PRODUCTS
+    </button>
+
+    <button
+      onClick={() => {
+        setActiveDesktopGroup(null)
+        handleCategorySelect('bestsellers')
+      }}
+      className={`text-xs tracking-widest pb-1 whitespace-nowrap ${
+        filters.category === 'bestsellers'
+          ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
+          : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
+      }`}
+    >
+      BEST SELLERS
+    </button>
+
+    {DESKTOP_GROUPS.map(group => (
+      <button
+        key={group.value}
+        onClick={() => {
+          setActiveDesktopGroup(group.value)
+          handleCategorySelect(group.value)
+        }}
+        className={`text-xs tracking-widest pb-1 whitespace-nowrap ${
+          filters.category === group.value
+            ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
+            : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
+        }`}
+      >
+        {group.label}
+      </button>
+    ))}
+
+  </div>
+
+  {/* Subcategories */}
+
+  {activeDesktopGroup && (
+
+    <div className="flex gap-6 pb-4 overflow-x-auto scrollbar-hide">
+
+      {DESKTOP_GROUPS
+        .find(g => g.value === activeDesktopGroup)
+        ?.children.map(type => (
+
+          <button
+            key={type}
+            onClick={() => handleCategorySelect(type)}
+            className={`text-[11px] tracking-widest whitespace-nowrap ${
+              filters.category === type
+                ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
+                : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
+            }`}
+          >
+            {catLabel(type)}
+          </button>
+
+      ))}
+
+    </div>
+
+  )}
+
+</div>
       {/* Product count */}
       <div className="mx-2 pt-2 pr-3 pb-3 pl-3 opacity-45 lg:px-8 flex items-center justify-between">
         <p className="text-[#3D4F3D]/60 text-xs tracking-wider">
