@@ -906,6 +906,7 @@ export default function Shop() {
               </button>
             ))}
           </div>
+          
           {/* Desktop Navigation */}
 <div className="hidden md:flex flex-col py-4">
 
