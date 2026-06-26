@@ -968,21 +968,20 @@ export default function Shop() {
               </button>
             ))}
           </div>
-          {/* Desktop navigation */}
+{/* Desktop Navigation */}
 <div className="hidden md:flex flex-col">
 
-  {/* Main navigation */}
+  {/* Main Categories */}
   <div
     ref={tabsContainerRef}
     className="flex items-center gap-6 lg:gap-8 py-4 overflow-x-auto scrollbar-hide"
   >
-
     <button
       onClick={() => {
         setActiveDesktopGroup(null)
         handleCategorySelect('all')
       }}
-      className={`text-xs tracking-widest pb-1 whitespace-nowrap ${
+      className={`text-xs tracking-widest transition-all pb-1 whitespace-nowrap ${
         filters.category === 'all'
           ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
           : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
@@ -996,7 +995,7 @@ export default function Shop() {
         setActiveDesktopGroup(null)
         handleCategorySelect('bestsellers')
       }}
-      className={`text-xs tracking-widest pb-1 whitespace-nowrap ${
+      className={`text-xs tracking-widest transition-all pb-1 whitespace-nowrap ${
         filters.category === 'bestsellers'
           ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
           : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
@@ -1012,7 +1011,7 @@ export default function Shop() {
           setActiveDesktopGroup(group.value)
           handleCategorySelect(group.value)
         }}
-        className={`text-xs tracking-widest pb-1 whitespace-nowrap ${
+        className={`text-xs tracking-widest transition-all pb-1 whitespace-nowrap ${
           filters.category === group.value
             ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
             : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
@@ -1021,35 +1020,29 @@ export default function Shop() {
         {group.label}
       </button>
     ))}
-
   </div>
 
-  {/* Subcategories */}
-
+  {/* Sub Categories */}
   {activeDesktopGroup && (
+    <div className="flex flex-wrap gap-5 pb-4 pt-1">
 
-    <div className="flex gap-6 pb-4 overflow-x-auto scrollbar-hide">
+      {DESKTOP_GROUPS.find(g => g.value === activeDesktopGroup)?.children.map(type => (
 
-      {DESKTOP_GROUPS
-        .find(g => g.value === activeDesktopGroup)
-        ?.children.map(type => (
-
-          <button
-            key={type}
-            onClick={() => handleCategorySelect(type)}
-            className={`text-[11px] tracking-widest whitespace-nowrap ${
-              filters.category === type
-                ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
-                : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
-            }`}
-          >
-            {catLabel(type)}
-          </button>
+        <button
+          key={type}
+          onClick={() => handleCategorySelect(type)}
+          className={`text-[11px] tracking-widest transition-all pb-1 whitespace-nowrap ${
+            filters.category === type
+              ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
+              : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
+          }`}
+        >
+          {catLabel(type)}
+        </button>
 
       ))}
 
     </div>
-
   )}
 
 </div>
