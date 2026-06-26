@@ -46,7 +46,53 @@ const ALL_CATEGORIES = [
   { value: 'Keratin Hair Mask', label: 'HAIR MASK'     },
   { value: 'Self Care',         label: 'SELF CARE'     },
 ]
-
+const DESKTOP_GROUPS = [
+  {
+    value: 'Perfume',
+    label: 'PERFUMES',
+    children: ['Perfume'],
+  },
+  {
+    value: 'Home Scent',
+    label: 'HOME SCENT',
+    children: ['Diffuser', 'Candle'],
+  },
+  {
+    value: 'Body',
+    label: 'BODY',
+    children: [
+      'Body Cream',
+      'Body Butter',
+      'Body Oil',
+      'Body Scrub',
+      'Shower Gel',
+      'Dead Sea Salt',
+    ],
+  },
+  {
+    value: 'Hands',
+    label: 'HANDS',
+    children: [
+      'Hand Cream',
+      'Liquid Soap',
+      'Soap',
+    ],
+  },
+  {
+    value: 'Hair',
+    label: 'HAIR',
+    children: [
+      'Shampoo',
+      'Hair Conditioner',
+      'Keratin Hair Mask',
+    ],
+  },
+  {
+    value: 'Self Care',
+    label: 'SELF CARE',
+    children: ['Self Care'],
+  },
+]
 // Used by AllProductsSections carousels + MENU browse-by
 const SECTION_CATS = [
   { value: 'Perfume',           label: 'PERFUMES'      },
