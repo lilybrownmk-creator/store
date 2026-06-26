@@ -29,7 +29,22 @@ const categories = [
 const ALL_CATEGORIES = [
   { value: 'all',               label: 'ALL PRODUCTS'  },
   { value: 'bestsellers',       label: 'BEST SELLERS'  },
- 
+  { value: 'Perfume',           label: 'PERFUMES'      },
+  { value: 'Hand Cream',        label: 'HAND CREAM'    },
+  { value: 'Body Cream',        label: 'BODY CREAM'    },
+  { value: 'Diffuser',          label: 'DIFFUSERS'     },
+  { value: 'Shower Gel',        label: 'SHOWER GEL'    },
+  { value: 'Body Scrub',        label: 'BODY SCRUB'    },
+  { value: 'Body Oil',          label: 'BODY OIL'      },
+  { value: 'Body Butter',       label: 'BODY BUTTER'   },
+  { value: 'Candle',            label: 'CANDLES'       },
+  { value: 'Liquid Soap',       label: 'LIQUID SOAP'   },
+  { value: 'Soap',              label: 'SOLID SOAP'    },
+  { value: 'Dead Sea Salt',     label: 'DEAD SEA SALT' },
+  { value: 'Shampoo',           label: 'SHAMPOO'       },
+  { value: 'Hair Conditioner',  label: 'CONDITIONER'   },
+  { value: 'Keratin Hair Mask', label: 'HAIR MASK'     },
+  { value: 'Self Care',         label: 'SELF CARE'     },
 ]
 
 // Used by AllProductsSections carousels + MENU browse-by
