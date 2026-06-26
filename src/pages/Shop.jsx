@@ -26,11 +26,50 @@ const categories = [
 ]
 
 // Desktop nav: specific product types (like Budapest)
-const ALL_CATEGORIES = [
-  { value: 'all',               label: 'ALL PRODUCTS'  },
-  { value: 'bestsellers',       label: 'BEST SELLERS'  },
- 
+// Desktop main navigation
+const MAIN_CATEGORIES = [
+  { value: 'all', label: 'ALL PRODUCTS' },
+  { value: 'bestsellers', label: 'BEST SELLERS' },
+  { value: 'Perfume', label: 'PERFUMES' },
+  { value: 'Home Scent', label: 'HOME SCENT' },
+  { value: 'Body', label: 'BODY' },
+  { value: 'Hands', label: 'HANDS' },
+  { value: 'Hair', label: 'HAIR' },
+  { value: 'Self Care', label: 'SELF CARE' },
 ]
+
+// Order of subcategories shown under each main category
+const PRODUCT_TYPE_ORDER = {
+  Body: [
+    'Body Butter',
+    'Body Cream',
+    'Body Oil',
+    'Body Scrub',
+    'Shower Gel',
+    'Dead Sea Salt',
+  ],
+
+  Hands: [
+    'Hand Cream',
+    'Liquid Soap',
+    'Soap',
+  ],
+
+  Hair: [
+    'Shampoo',
+    'Hair Conditioner',
+    'Keratin Hair Mask',
+  ],
+
+  'Home Scent': [
+    'Diffuser',
+    'Candle',
+  ],
+
+  Perfume: ['Perfume'],
+
+  'Self Care': [],
+}
 // Desktop main navigation
 const MAIN_CATEGORIES = [
   { value: 'all', label: 'ALL PRODUCTS' },
