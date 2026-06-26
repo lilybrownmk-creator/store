@@ -390,6 +390,7 @@ export default function Shop() {
   const [searchQuery, setSearchQuery]         = useState('')
   const [mobileMenuOpen, setMobileMenuOpen]   = useState(false)
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false)
+  const [activeDesktopGroup, setActiveDesktopGroup] = useState(null)
   const [searchOpen, setSearchOpen]           = useState(false)
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [browseList, setBrowseList]           = useState([])
