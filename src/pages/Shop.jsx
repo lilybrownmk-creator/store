@@ -46,53 +46,7 @@ const ALL_CATEGORIES = [
   { value: 'Keratin Hair Mask', label: 'HAIR MASK'     },
   { value: 'Self Care',         label: 'SELF CARE'     },
 ]
-const DESKTOP_GROUPS = [
-  {
-    value: 'Perfume',
-    label: 'PERFUMES',
-    children: ['Perfume'],
-  },
-  {
-    value: 'Home Scent',
-    label: 'HOME SCENT',
-    children: ['Diffuser', 'Candle'],
-  },
-  {
-    value: 'Body',
-    label: 'BODY',
-    children: [
-      'Body Cream',
-      'Body Butter',
-      'Body Oil',
-      'Body Scrub',
-      'Shower Gel',
-      'Dead Sea Salt',
-    ],
-  },
-  {
-    value: 'Hands',
-    label: 'HANDS',
-    children: [
-      'Hand Cream',
-      'Liquid Soap',
-      'Soap',
-    ],
-  },
-  {
-    value: 'Hair',
-    label: 'HAIR',
-    children: [
-      'Shampoo',
-      'Hair Conditioner',
-      'Keratin Hair Mask',
-    ],
-  },
-  {
-    value: 'Self Care',
-    label: 'SELF CARE',
-    children: ['Self Care'],
-  },
-]
+
 // Used by AllProductsSections carousels + MENU browse-by
 const SECTION_CATS = [
   { value: 'Perfume',           label: 'PERFUMES'      },
@@ -390,7 +344,6 @@ export default function Shop() {
   const [searchQuery, setSearchQuery]         = useState('')
   const [mobileMenuOpen, setMobileMenuOpen]   = useState(false)
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false)
-  const [activeDesktopGroup, setActiveDesktopGroup] = useState(null)
   const [searchOpen, setSearchOpen]           = useState(false)
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [browseList, setBrowseList]           = useState([])
@@ -968,84 +921,26 @@ export default function Shop() {
               </button>
             ))}
           </div>
-{/* Desktop Navigation */}
-<div className="hidden md:flex flex-col">
+          {/* Desktop: all 17 tabs */}
+          <div ref={tabsContainerRef} className="hidden md:flex items-center gap-6 lg:gap-8 py-4 overflow-x-auto scrollbar-hide">
+            {ALL_CATEGORIES.map(cat => (
+              <button
+                key={cat.value}
+                data-active={filters.category === cat.value}
+                onClick={() => handleCategorySelect(cat.value)}
+                className={`text-xs tracking-widest transition-all pb-1 whitespace-nowrap flex-shrink-0 ${
+                  filters.category === cat.value
+                    ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
+                    : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
+                }`}
+              >
+                {catLabel(cat.value)}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
 
-  {/* Main Categories */}
-  <div
-    ref={tabsContainerRef}
-    className="flex items-center gap-6 lg:gap-8 py-4 overflow-x-auto scrollbar-hide"
-  >
-    <button
-      onClick={() => {
-        setActiveDesktopGroup(null)
-        handleCategorySelect('all')
-      }}
-      className={`text-xs tracking-widest transition-all pb-1 whitespace-nowrap ${
-        filters.category === 'all'
-          ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
-          : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
-      }`}
-    >
-      ALL PRODUCTS
-    </button>
-
-    <button
-      onClick={() => {
-        setActiveDesktopGroup(null)
-        handleCategorySelect('bestsellers')
-      }}
-      className={`text-xs tracking-widest transition-all pb-1 whitespace-nowrap ${
-        filters.category === 'bestsellers'
-          ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
-          : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
-      }`}
-    >
-      BEST SELLERS
-    </button>
-
-    {DESKTOP_GROUPS.map(group => (
-      <button
-        key={group.value}
-        onClick={() => {
-          setActiveDesktopGroup(group.value)
-          handleCategorySelect(group.value)
-        }}
-        className={`text-xs tracking-widest transition-all pb-1 whitespace-nowrap ${
-          filters.category === group.value
-            ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
-            : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
-        }`}
-      >
-        {group.label}
-      </button>
-    ))}
-  </div>
-
-  {/* Sub Categories */}
-  {activeDesktopGroup && (
-    <div className="flex flex-wrap gap-5 pb-4 pt-1">
-
-      {DESKTOP_GROUPS.find(g => g.value === activeDesktopGroup)?.children.map(type => (
-
-        <button
-          key={type}
-          onClick={() => handleCategorySelect(type)}
-          className={`text-[11px] tracking-widest transition-all pb-1 whitespace-nowrap ${
-            filters.category === type
-              ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
-              : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
-          }`}
-        >
-          {catLabel(type)}
-        </button>
-
-      ))}
-
-    </div>
-  )}
-
-</div>
       {/* Product count */}
       <div className="mx-2 pt-2 pr-3 pb-3 pl-3 opacity-45 lg:px-8 flex items-center justify-between">
         <p className="text-[#3D4F3D]/60 text-xs tracking-wider">
