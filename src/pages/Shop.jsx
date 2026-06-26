@@ -906,37 +906,25 @@ export default function Shop() {
               </button>
             ))}
           </div>
-          
-          {/* Desktop Navigation */}
-<div className="hidden md:flex flex-col py-4">
-
-  {/* Main categories */}
-  <div className="flex items-center gap-8 overflow-x-auto scrollbar-hide">
-    {[
-      'all',
-      'bestsellers',
-      'Perfume',
-      'Home Scent',
-      'Body',
-      'Hands',
-      'Hair',
-      'Self Care',
-    ].map(cat => (
-      <button
-        key={cat}
-        onClick={() => handleCategorySelect(cat)}
-        className={`text-xs tracking-[0.18em] pb-2 border-b transition-all whitespace-nowrap ${
-          filters.category === cat
-            ? 'border-[#3D4F3D] text-[#3D4F3D]'
-            : 'border-transparent text-[#3D4F3D]/55 hover:text-[#3D4F3D]'
-        }`}
-      >
-        {catLabel(cat)}
-      </button>
-    ))}
-  </div>
-
-</div>
+          {/* Desktop: all 17 tabs */}
+          <div ref={tabsContainerRef} className="hidden md:flex items-center gap-6 lg:gap-8 py-4 overflow-x-auto scrollbar-hide">
+            {ALL_CATEGORIES.map(cat => (
+              <button
+                key={cat.value}
+                data-active={filters.category === cat.value}
+                onClick={() => handleCategorySelect(cat.value)}
+                className={`text-xs tracking-widest transition-all pb-1 whitespace-nowrap flex-shrink-0 ${
+                  filters.category === cat.value
+                    ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
+                    : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
+                }`}
+              >
+                {catLabel(cat.value)}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* Product count */}
       <div className="mx-2 pt-2 pr-3 pb-3 pl-3 opacity-45 lg:px-8 flex items-center justify-between">
