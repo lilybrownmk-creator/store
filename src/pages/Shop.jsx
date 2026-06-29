@@ -29,7 +29,7 @@ const categories = [
 const ALL_CATEGORIES = [
   { value: 'all',               label: 'ALL PRODUCTS'  },
   { value: 'bestsellers',       label: 'BEST SELLERS'  },
-  { value: 'Perfume',           label: 'PERFUMES'      },
+  { value: 'Perfume',           label: 'Perfumes'      },
   { value: 'Hand Cream',        label: 'HAND CREAM'    },
   { value: 'Body Cream',        label: 'BODY CREAM'    },
   { value: 'Diffuser',          label: 'DIFFUSERS'     },
