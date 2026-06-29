@@ -922,38 +922,24 @@ export default function Shop() {
             ))}
           </div>
           {/* Desktop: all 17 tabs */}
-         <div
-  ref={tabsContainerRef}
-  className="hidden md:flex items-center py-4"
->
-  <div className="flex items-center gap-3 lg:gap-4 flex-wrap">
-    {ALL_CATEGORIES.map((cat, index) => (
-      <div key={cat.value} className="flex items-center">
-        <button
-          data-active={filters.category === cat.value}
-          onClick={() => handleCategorySelect(cat.value)}
-          className={`text-[11px] uppercase tracking-wider transition-all pb-1 whitespace-nowrap ${
-            filters.category === cat.value
-              ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
-              : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
-          }`}
-        >
-          {catLabel(cat.value)}
-        </button>
-
-        {/* separator */}
-        {index !== ALL_CATEGORIES.length - 1 && (
-          <span className="mx-2 text-[#3D4F3D]/30">|</span>
-        )}
+          <div ref={tabsContainerRef} className="hidden md:flex items-center gap-6 lg:gap-8 py-4 overflow-x-auto scrollbar-hide">
+            {ALL_CATEGORIES.map(cat => (
+              <button
+                key={cat.value}
+                data-active={filters.category === cat.value}
+                onClick={() => handleCategorySelect(cat.value)}
+                className={`text-xs tracking-widest transition-all pb-1 whitespace-nowrap flex-shrink-0 ${
+                  filters.category === cat.value
+                    ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
+                    : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
+                }`}
+              >
+                {catLabel(cat.value)}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
-    ))}
-  </div>
-
-  {/* right hint arrow / more indicator */}
-  <button className="ml-4 text-[#3D4F3D]/60 hover:text-[#3D4F3D]">
-    ›
-  </button>
-</div>
 
       {/* Product count */}
       <div className="mx-2 pt-2 pr-3 pb-3 pl-3 opacity-45 lg:px-8 flex items-center justify-between">
