@@ -46,6 +46,8 @@ const ALL_CATEGORIES = [
   { value: 'Keratin Hair Mask', label: 'HAIR MASK'     },
   { value: 'Self Care',         label: 'SELF CARE'     },
 
+]
+
 const MAIN_TABS = ALL_CATEGORIES.slice(0, 7)
 const EXTRA_TABS = ALL_CATEGORIES.slice(7)
 
