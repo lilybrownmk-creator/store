@@ -924,25 +924,29 @@ export default function Shop() {
           {/* Desktop: all 17 tabs */}
           <div
   ref={tabsContainerRef}
-  className="hidden md:flex items-center gap-1.5 py-4 flex-wrap"
+  className="hidden md:flex items-center gap-1 py-4 overflow-x-auto scrollbar-hide"
 >
-  {ALL_CATEGORIES.map(cat => (
-    <button
-      key={cat.value}
-      data-active={filters.category === cat.value}
-      onClick={() => handleCategorySelect(cat.value)}
-      className={`flex-shrink-0 rounded-full px-3 py-1.5 text-xs font-medium capitalize tracking-wide transition-all duration-200 whitespace-nowrap ${
-        filters.category === cat.value
-          ? 'bg-[#3D4F3D] text-white shadow-sm'
-          : 'text-[#3D4F3D]/70 hover:bg-[#3D4F3D]/10 hover:text-[#3D4F3D]'
-      }`}
-    >
-      {catLabel(cat.value)}
-    </button>
-  ))}
+  {ALL_CATEGORIES.map(cat => {
+    const label = catLabel(cat.value).toLowerCase()
+
+    return (
+      <button
+        key={cat.value}
+        data-active={filters.category === cat.value}
+        onClick={() => handleCategorySelect(cat.value)}
+        className={`flex-shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium tracking-normal transition-all duration-200 whitespace-nowrap ${
+          filters.category === cat.value
+            ? 'bg-[#3D4F3D] text-white shadow-sm'
+            : 'text-[#3D4F3D]/70 hover:bg-[#3D4F3D]/10 hover:text-[#3D4F3D]'
+        }`}
+      >
+        {label.charAt(0).toUpperCase() + label.slice(1)}
+      </button>
+    )
+  })}
 </div>
-</div>
-</div>
+        </div>
+      </div>
 
       {/* Product count */}
       <div className="mx-2 pt-2 pr-3 pb-3 pl-3 opacity-45 lg:px-8 flex items-center justify-between">
