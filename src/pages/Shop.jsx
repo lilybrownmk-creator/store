@@ -926,24 +926,22 @@ export default function Shop() {
   ref={tabsContainerRef}
   className="hidden md:flex items-center gap-2 py-4 overflow-x-auto scrollbar-hide"
 >
-  {ALL_CATEGORIES.map(cat => {
-    const isActive = filters.category === cat.value
-
-    return (
-      <button
-        key={cat.value}
-        data-active={isActive}
-        onClick={() => handleCategorySelect(cat.value)}
-        className={`relative flex-shrink-0 rounded-full px-4 py-2 text-xs font-medium uppercase tracking-[0.14em] transition-all duration-200 whitespace-nowrap ${
-          isActive
-            ? 'bg-[#3D4F3D] text-white shadow-sm'
-            : 'text-[#3D4F3D]/70 hover:bg-[#3D4F3D]/10 hover:text-[#3D4F3D]'
-        }`}
-      >
-        {catLabel(cat.value)}
-      </button>
-    )
-  })}
+  {ALL_CATEGORIES.map(cat => (
+    <button
+      key={cat.value}
+      data-active={filters.category === cat.value}
+      onClick={() => handleCategorySelect(cat.value)}
+      className={`flex-shrink-0 rounded-full px-4 py-2 text-xs font-medium uppercase tracking-[0.14em] transition-all duration-200 whitespace-nowrap ${
+        filters.category === cat.value
+          ? 'bg-[#3D4F3D] text-white shadow-sm'
+          : 'text-[#3D4F3D]/70 hover:bg-[#3D4F3D]/10 hover:text-[#3D4F3D]'
+      }`}
+    >
+      {catLabel(cat.value)}
+    </button>
+  ))}
+</div>
+</div>
 </div>
 
       {/* Product count */}
