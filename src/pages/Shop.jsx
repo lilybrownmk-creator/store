@@ -928,7 +928,6 @@ export default function Shop() {
             ))}
           </div>
           {/* Desktop: all 17 tabs */}
-          {/* Desktop Categories */}
 <div
   ref={tabsContainerRef}
   className="hidden md:flex items-center justify-center gap-2 py-4"
