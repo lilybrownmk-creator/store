@@ -46,12 +46,9 @@ const ALL_CATEGORIES = [
   { value: 'Keratin Hair Mask', label: 'HAIR MASK'     },
   { value: 'Self Care',         label: 'SELF CARE'     },
 
-const TABS_PER_PAGE = 8
+const MAIN_TABS = ALL_CATEGORIES.slice(0, 7)
+const EXTRA_TABS = ALL_CATEGORIES.slice(7)
 
-const pagedCategories = [
-  ALL_CATEGORIES.slice(0, TABS_PER_PAGE),
-  ALL_CATEGORIES.slice(TABS_PER_PAGE)
-]
 // Used by AllProductsSections carousels + MENU browse-by
 const SECTION_CATS = [
   { value: 'Perfume',           label: 'Perfumes'      },
@@ -349,7 +346,7 @@ export default function Shop() {
   const [searchQuery, setSearchQuery]         = useState('')
   const [mobileMenuOpen, setMobileMenuOpen]   = useState(false)
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false)
-  const [tabsPage, setTabsPage] = useState(0)
+  const [showMoreTabs, setShowMoreTabs] = useState(false)
   const [searchOpen, setSearchOpen]           = useState(false)
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [browseList, setBrowseList]           = useState([])
@@ -928,58 +925,36 @@ export default function Shop() {
             ))}
           </div>
           {/* Desktop: all 17 tabs */}
-<div
-  ref={tabsContainerRef}
-  className="hidden md:flex items-center justify-center gap-2 py-4"
->
+{/* Desktop Categories */}
+<div className="hidden md:flex items-center justify-center py-3">
 
-  {pagedCategories[tabsPage].map(cat => (
+  <div className="flex items-center gap-2">
 
-    <button
-      key={cat.value}
-      data-active={filters.category === cat.value}
-      onClick={() => handleCategorySelect(cat.value)}
-      className={`
-        px-3
-        py-2
-        rounded-full
-        border
-        text-[11px]
-        tracking-wide
-        transition-all
-        whitespace-nowrap
+    {(showMoreTabs ? EXTRA_TABS : MAIN_TABS).map(cat => (
 
-        ${
+      <button
+        key={cat.value}
+        data-active={filters.category === cat.value}
+        onClick={() => handleCategorySelect(cat.value)}
+        className={`px-2 py-1 text-[11px] tracking-wide whitespace-nowrap transition-all ${
           filters.category === cat.value
-            ? 'bg-[#3D4F3D] text-white border-[#3D4F3D]'
-            : 'bg-white text-[#3D4F3D] border-[#3D4F3D]/20 hover:border-[#3D4F3D]'
-        }
-      `}
-    >
-      {catLabel(cat.value)}
-    </button>
+            ? 'text-[#3D4F3D] border-b border-[#3D4F3D] font-medium'
+            : 'text-[#3D4F3D]/60 hover:text-[#3D4F3D]'
+        }`}
+      >
+        {catLabel(cat.value)}
+      </button>
 
-  ))}
-
-  {tabsPage === 0 ? (
+    ))}
 
     <button
-      onClick={() => setTabsPage(1)}
-      className="ml-2 px-3 py-2 rounded-full border border-[#3D4F3D]/20 hover:bg-[#3D4F3D] hover:text-white transition-all"
+      onClick={() => setShowMoreTabs(!showMoreTabs)}
+      className="px-2 py-1 text-[11px] font-medium text-[#3D4F3D] hover:opacity-70 transition"
     >
-      →
+      {showMoreTabs ? 'LESS ▲' : 'MORE ▼'}
     </button>
 
-  ) : (
-
-    <button
-      onClick={() => setTabsPage(0)}
-      className="ml-2 px-3 py-2 rounded-full border border-[#3D4F3D]/20 hover:bg-[#3D4F3D] hover:text-white transition-all"
-    >
-      ←
-    </button>
-
-  )}
+  </div>
 
 </div>
 
