@@ -922,24 +922,61 @@ export default function Shop() {
             ))}
           </div>
           {/* Desktop: all 17 tabs */}
-          <div ref={tabsContainerRef} className="hidden md:flex items-center gap-1 lg:gap-3 py-4 overflow-x-auto scrollbar-hide">
-            {ALL_CATEGORIES.map(cat => (
-              <button
-                key={cat.value}
-                data-active={filters.category === cat.value}
-                onClick={() => handleCategorySelect(cat.value)}
-                className={`text-xs tracking-widest transition-all pb-1 whitespace-nowrap flex-shrink-0 ${
-                  filters.category === cat.value
-                    ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
-                    : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
-                }`}
-              >
-                {catLabel(cat.value)}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+          {/* Desktop Categories */}
+<div
+  ref={tabsContainerRef}
+  className="hidden md:flex items-center justify-center gap-2 py-4"
+>
+
+  {pagedCategories[tabsPage].map(cat => (
+
+    <button
+      key={cat.value}
+      data-active={filters.category === cat.value}
+      onClick={() => handleCategorySelect(cat.value)}
+      className={`
+        px-3
+        py-2
+        rounded-full
+        border
+        text-[11px]
+        tracking-wide
+        transition-all
+        whitespace-nowrap
+
+        ${
+          filters.category === cat.value
+            ? 'bg-[#3D4F3D] text-white border-[#3D4F3D]'
+            : 'bg-white text-[#3D4F3D] border-[#3D4F3D]/20 hover:border-[#3D4F3D]'
+        }
+      `}
+    >
+      {catLabel(cat.value)}
+    </button>
+
+  ))}
+
+  {tabsPage === 0 ? (
+
+    <button
+      onClick={() => setTabsPage(1)}
+      className="ml-2 px-3 py-2 rounded-full border border-[#3D4F3D]/20 hover:bg-[#3D4F3D] hover:text-white transition-all"
+    >
+      →
+    </button>
+
+  ) : (
+
+    <button
+      onClick={() => setTabsPage(0)}
+      className="ml-2 px-3 py-2 rounded-full border border-[#3D4F3D]/20 hover:bg-[#3D4F3D] hover:text-white transition-all"
+    >
+      ←
+    </button>
+
+  )}
+
+</div>
 
       {/* Product count */}
       <div className="mx-2 pt-2 pr-3 pb-3 pl-3 opacity-45 lg:px-8 flex items-center justify-between">
