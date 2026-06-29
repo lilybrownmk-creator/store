@@ -48,8 +48,6 @@ const ALL_CATEGORIES = [
 
 ]
 
-const MAIN_TABS = ALL_CATEGORIES.slice(0, 7)
-const EXTRA_TABS = ALL_CATEGORIES.slice(7)
 
 // Used by AllProductsSections carousels + MENU browse-by
 const SECTION_CATS = [
@@ -348,7 +346,6 @@ export default function Shop() {
   const [searchQuery, setSearchQuery]         = useState('')
   const [mobileMenuOpen, setMobileMenuOpen]   = useState(false)
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false)
-  const [showMoreTabs, setShowMoreTabs] = useState(false)
   const [searchOpen, setSearchOpen]           = useState(false)
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [browseList, setBrowseList]           = useState([])
@@ -360,6 +357,7 @@ export default function Shop() {
     try { return JSON.parse(localStorage.getItem('zr_recently_viewed')) || [] } catch { return [] }
   })
   const [showBackToTop, setShowBackToTop]     = useState(false)
+  const [showMoreTabs, setShowMoreTabs] = useState(false)
   const tabsContainerRef   = useRef(null)
   const productGridRef     = useRef(null)
   const touchStartX        = useRef(null)
@@ -927,21 +925,24 @@ export default function Shop() {
             ))}
           </div>
           {/* Desktop: all 17 tabs */}
-{/* Desktop Categories */}
+{/* Desktop: Categories */}
 <div className="hidden md:flex items-center justify-center py-3">
 
-  <div className="flex items-center gap-2">
+  <div className="flex items-center gap-1">
 
-    {(showMoreTabs ? EXTRA_TABS : MAIN_TABS).map(cat => (
+    {(showMoreTabs
+      ? ALL_CATEGORIES.slice(7)
+      : ALL_CATEGORIES.slice(0, 7)
+    ).map(cat => (
 
       <button
         key={cat.value}
         data-active={filters.category === cat.value}
         onClick={() => handleCategorySelect(cat.value)}
-        className={`px-2 py-1 text-[11px] tracking-wide whitespace-nowrap transition-all ${
+        className={`text-[11px] tracking-wide px-2 py-1 whitespace-nowrap transition-all ${
           filters.category === cat.value
-            ? 'text-[#3D4F3D] border-b border-[#3D4F3D] font-medium'
-            : 'text-[#3D4F3D]/60 hover:text-[#3D4F3D]'
+            ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
+            : 'text-[#3D4F3D]/55 hover:text-[#3D4F3D]'
         }`}
       >
         {catLabel(cat.value)}
@@ -951,9 +952,9 @@ export default function Shop() {
 
     <button
       onClick={() => setShowMoreTabs(!showMoreTabs)}
-      className="px-2 py-1 text-[11px] font-medium text-[#3D4F3D] hover:opacity-70 transition"
+      className="text-[11px] tracking-wide px-2 py-1 text-[#3D4F3D] hover:opacity-70"
     >
-      {showMoreTabs ? 'LESS ▲' : 'MORE ▼'}
+      {showMoreTabs ? '← BACK' : 'MORE →'}
     </button>
 
   </div>
