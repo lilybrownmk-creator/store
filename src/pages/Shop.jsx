@@ -921,25 +921,122 @@ export default function Shop() {
               </button>
             ))}
           </div>
-          {/* Desktop: all 17 tabs */}
-          <div ref={tabsContainerRef} className="hidden md:flex items-center gap-6 lg:gap-8 py-4 overflow-x-auto scrollbar-hide">
-            {ALL_CATEGORIES.map(cat => (
-              <button
-                key={cat.value}
-                data-active={filters.category === cat.value}
-                onClick={() => handleCategorySelect(cat.value)}
-                className={`text-xs tracking-widest transition-all pb-1 whitespace-nowrap flex-shrink-0 ${
-                  filters.category === cat.value
-                    ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
-                    : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
-                }`}
-              >
-                {catLabel(cat.value)}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+          {/* Desktop Navigation */}
+<div className="hidden md:flex flex-col">
+
+  {/* Main Categories */}
+  <div className="relative">
+
+    <div
+      ref={tabsContainerRef}
+      className="flex items-center gap-3 py-4 pr-14 overflow-x-auto scrollbar-hide whitespace-nowrap"
+    >
+
+      <button
+        onClick={() => {
+          setActiveDesktopGroup(null)
+          handleCategorySelect('all')
+        }}
+        className={`text-[13px] transition-colors ${
+          filters.category === 'all'
+            ? 'text-[#3D4F3D] font-medium'
+            : 'text-[#3D4F3D]/60 hover:text-[#3D4F3D]'
+        }`}
+      >
+        All Products
+      </button>
+
+      <span className="text-[#3D4F3D]/20">|</span>
+
+      <button
+        onClick={() => {
+          setActiveDesktopGroup(null)
+          handleCategorySelect('bestsellers')
+        }}
+        className={`text-[13px] transition-colors ${
+          filters.category === 'bestsellers'
+            ? 'text-[#3D4F3D] font-medium'
+            : 'text-[#3D4F3D]/60 hover:text-[#3D4F3D]'
+        }`}
+      >
+        Best Sellers
+      </button>
+
+      {DESKTOP_GROUPS.map(group => (
+        <React.Fragment key={group.value}>
+
+          <span className="text-[#3D4F3D]/20">|</span>
+
+          <button
+            onClick={() => {
+              setActiveDesktopGroup(group.value)
+              handleCategorySelect(group.value)
+            }}
+            className={`text-[13px] transition-colors ${
+              filters.category === group.value
+                ? 'text-[#3D4F3D] font-medium'
+                : 'text-[#3D4F3D]/60 hover:text-[#3D4F3D]'
+            }`}
+          >
+            {group.label}
+          </button>
+
+        </React.Fragment>
+      ))}
+
+    </div>
+
+    {/* Fade + Arrow */}
+    <div className="absolute right-0 top-0 h-full w-20 bg-gradient-to-l from-[#F7F5F2] to-transparent pointer-events-none" />
+
+    <button
+      onClick={() =>
+        tabsContainerRef.current?.scrollBy({
+          left: 220,
+          behavior: 'smooth',
+        })
+      }
+      className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-[#3D4F3D]/60 hover:text-[#3D4F3D] bg-[#F7F5F2]"
+    >
+      →
+    </button>
+
+  </div>
+
+  {/* Sub Categories */}
+
+  {activeDesktopGroup && (
+
+    <div className="flex items-center gap-3 pt-1 pb-4 overflow-x-auto scrollbar-hide whitespace-nowrap">
+
+      {DESKTOP_GROUPS.find(g => g.value === activeDesktopGroup)?.children.map((type, index, arr) => (
+
+        <React.Fragment key={type}>
+
+          <button
+            onClick={() => handleCategorySelect(type)}
+            className={`text-[12px] transition-colors ${
+              filters.category === type
+                ? 'text-[#3D4F3D] font-medium'
+                : 'text-[#3D4F3D]/55 hover:text-[#3D4F3D]'
+            }`}
+          >
+            {catLabel(type)}
+          </button>
+
+          {index < arr.length - 1 && (
+            <span className="text-[#3D4F3D]/20">|</span>
+          )}
+
+        </React.Fragment>
+
+      ))}
+
+    </div>
+
+  )}
+
+</div>
 
       {/* Product count */}
       <div className="mx-2 pt-2 pr-3 pb-3 pl-3 opacity-45 lg:px-8 flex items-center justify-between">
