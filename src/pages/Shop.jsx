@@ -924,24 +924,29 @@ export default function Shop() {
           {/* Desktop: all 17 tabs */}
           <div
   ref={tabsContainerRef}
-  className="hidden md:flex items-center gap-1 py-4 overflow-x-auto scrollbar-hide"
+  className="hidden md:flex items-center gap-0.5 py-4 overflow-x-auto scrollbar-hide"
 >
-  {ALL_CATEGORIES.map(cat => {
+  {ALL_CATEGORIES.map((cat, index) => {
     const label = catLabel(cat.value).toLowerCase()
 
     return (
-      <button
-        key={cat.value}
-        data-active={filters.category === cat.value}
-        onClick={() => handleCategorySelect(cat.value)}
-        className={`flex-shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium tracking-normal transition-all duration-200 whitespace-nowrap ${
-          filters.category === cat.value
-            ? 'bg-[#3D4F3D] text-white shadow-sm'
-            : 'text-[#3D4F3D]/70 hover:bg-[#3D4F3D]/10 hover:text-[#3D4F3D]'
-        }`}
-      >
-        {label.charAt(0).toUpperCase() + label.slice(1)}
-      </button>
+      <div key={cat.value} className="flex flex-shrink-0 items-center gap-0.5">
+        {index > 0 && (
+          <span className="h-3 w-px bg-[#3D4F3D]/20" />
+        )}
+
+        <button
+          data-active={filters.category === cat.value}
+          onClick={() => handleCategorySelect(cat.value)}
+          className={`rounded-full px-2 py-1 text-[11px] font-medium tracking-normal transition-all duration-200 whitespace-nowrap ${
+            filters.category === cat.value
+              ? 'bg-[#3D4F3D] text-white shadow-sm'
+              : 'text-[#3D4F3D]/70 hover:bg-[#3D4F3D]/10 hover:text-[#3D4F3D]'
+          }`}
+        >
+          {label.charAt(0).toUpperCase() + label.slice(1)}
+        </button>
+      </div>
     )
   })}
 </div>
