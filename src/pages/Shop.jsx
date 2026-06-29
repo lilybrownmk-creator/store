@@ -49,7 +49,7 @@ const ALL_CATEGORIES = [
 
 // Used by AllProductsSections carousels + MENU browse-by
 const SECTION_CATS = [
-  { value: 'Perfume',           label: 'PERFUMES'      },
+  { value: 'Perfume',           label: 'Perfumes'      },
   { value: 'Hand Cream',        label: 'HAND CREAM'    },
   { value: 'Body Cream',        label: 'BODY CREAM'    },
   { value: 'Diffuser',          label: 'DIFFUSERS'     },
