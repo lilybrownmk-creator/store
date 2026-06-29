@@ -941,7 +941,7 @@ export default function Shop() {
           className={`rounded-full px-2 py-1 text-[11px] font-medium tracking-normal transition-all duration-200 whitespace-nowrap ${
             filters.category === cat.value
               ? 'bg-[#3D4F3D] text-white shadow-sm'
-              : 'text-[#3D4F3D]/70 hover:bg-[#3D4F3D]/10 hover:text-[#3D4F3D]'
+              : 'text-[#3D4F3D]/90 hover:bg-[#3D4F3D]/10 hover:text-[#3D4F3D]'
           }`}
         >
           {label.charAt(0).toUpperCase() + label.slice(1)}
