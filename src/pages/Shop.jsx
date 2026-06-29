@@ -45,7 +45,7 @@ const ALL_CATEGORIES = [
   { value: 'Hair Conditioner',  label: 'CONDITIONER'   },
   { value: 'Keratin Hair Mask', label: 'HAIR MASK'     },
   { value: 'Self Care',         label: 'SELF CARE'     },
-]
+
 const TABS_PER_PAGE = 8
 
 const pagedCategories = [
