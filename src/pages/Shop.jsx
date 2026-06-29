@@ -46,7 +46,12 @@ const ALL_CATEGORIES = [
   { value: 'Keratin Hair Mask', label: 'HAIR MASK'     },
   { value: 'Self Care',         label: 'SELF CARE'     },
 ]
+const TABS_PER_PAGE = 8
 
+const pagedCategories = [
+  ALL_CATEGORIES.slice(0, TABS_PER_PAGE),
+  ALL_CATEGORIES.slice(TABS_PER_PAGE)
+]
 // Used by AllProductsSections carousels + MENU browse-by
 const SECTION_CATS = [
   { value: 'Perfume',           label: 'Perfumes'      },
@@ -344,6 +349,7 @@ export default function Shop() {
   const [searchQuery, setSearchQuery]         = useState('')
   const [mobileMenuOpen, setMobileMenuOpen]   = useState(false)
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false)
+  const [tabsPage, setTabsPage] = useState(0)
   const [searchOpen, setSearchOpen]           = useState(false)
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [browseList, setBrowseList]           = useState([])
