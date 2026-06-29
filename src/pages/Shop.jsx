@@ -922,7 +922,7 @@ export default function Shop() {
             ))}
           </div>
           {/* Desktop: all 17 tabs */}
-          <div ref={tabsContainerRef} className="hidden md:flex items-center gap-3 lg:gap-5 py-4 overflow-x-auto scrollbar-hide">
+          <div ref={tabsContainerRef} className="hidden md:flex items-center gap-1 lg:gap-3 py-4 overflow-x-auto scrollbar-hide">
             {ALL_CATEGORIES.map(cat => (
               <button
                 key={cat.value}
