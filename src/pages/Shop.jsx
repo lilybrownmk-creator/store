@@ -29,7 +29,7 @@ const categories = [
 const ALL_CATEGORIES = [
   { value: 'all',               label: 'ALL PRODUCTS'  },
   { value: 'bestsellers',       label: 'BEST SELLERS'  },
-  { value: 'Perfume',           label: 'Perfumes'      },
+  { value: 'Perfume',           label: 'PERFUMES'      },
   { value: 'Hand Cream',        label: 'HAND CREAM'    },
   { value: 'Body Cream',        label: 'BODY CREAM'    },
   { value: 'Diffuser',          label: 'DIFFUSERS'     },
@@ -45,13 +45,11 @@ const ALL_CATEGORIES = [
   { value: 'Hair Conditioner',  label: 'CONDITIONER'   },
   { value: 'Keratin Hair Mask', label: 'HAIR MASK'     },
   { value: 'Self Care',         label: 'SELF CARE'     },
-
 ]
-
 
 // Used by AllProductsSections carousels + MENU browse-by
 const SECTION_CATS = [
-  { value: 'Perfume',           label: 'Perfumes'      },
+  { value: 'Perfume',           label: 'PERFUMES'      },
   { value: 'Hand Cream',        label: 'HAND CREAM'    },
   { value: 'Body Cream',        label: 'BODY CREAM'    },
   { value: 'Diffuser',          label: 'DIFFUSERS'     },
@@ -357,7 +355,6 @@ export default function Shop() {
     try { return JSON.parse(localStorage.getItem('zr_recently_viewed')) || [] } catch { return [] }
   })
   const [showBackToTop, setShowBackToTop]     = useState(false)
-  const [showMoreTabs, setShowMoreTabs] = useState(false)
   const tabsContainerRef   = useRef(null)
   const productGridRef     = useRef(null)
   const touchStartX        = useRef(null)
@@ -925,41 +922,24 @@ export default function Shop() {
             ))}
           </div>
           {/* Desktop: all 17 tabs */}
-{/* Desktop: Categories */}
-<div className="hidden md:flex items-center justify-center py-3">
-
-  <div className="flex items-center gap-1">
-
-    {(showMoreTabs
-      ? ALL_CATEGORIES.slice(7)
-      : ALL_CATEGORIES.slice(0, 7)
-    ).map(cat => (
-
-      <button
-        key={cat.value}
-        data-active={filters.category === cat.value}
-        onClick={() => handleCategorySelect(cat.value)}
-        className={`text-[11px] tracking-wide px-2 py-1 whitespace-nowrap transition-all ${
-          filters.category === cat.value
-            ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
-            : 'text-[#3D4F3D]/55 hover:text-[#3D4F3D]'
-        }`}
-      >
-        {catLabel(cat.value)}
-      </button>
-
-    ))}
-
-    <button
-      onClick={() => setShowMoreTabs(!showMoreTabs)}
-      className="text-[11px] tracking-wide px-2 py-1 text-[#3D4F3D] hover:opacity-70"
-    >
-      {showMoreTabs ? '← BACK' : 'MORE →'}
-    </button>
-
-  </div>
-
-</div>
+          <div ref={tabsContainerRef} className="hidden md:flex items-center gap-6 lg:gap-8 py-4 overflow-x-auto scrollbar-hide">
+            {ALL_CATEGORIES.map(cat => (
+              <button
+                key={cat.value}
+                data-active={filters.category === cat.value}
+                onClick={() => handleCategorySelect(cat.value)}
+                className={`text-xs tracking-widest transition-all pb-1 whitespace-nowrap flex-shrink-0 ${
+                  filters.category === cat.value
+                    ? 'text-[#3D4F3D] border-b border-[#3D4F3D]'
+                    : 'text-[#3D4F3D]/50 hover:text-[#3D4F3D]'
+                }`}
+              >
+                {catLabel(cat.value)}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* Product count */}
       <div className="mx-2 pt-2 pr-3 pb-3 pl-3 opacity-45 lg:px-8 flex items-center justify-between">
