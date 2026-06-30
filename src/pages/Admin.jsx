@@ -329,7 +329,7 @@ export default function Admin() {
                       <TableHeader>
                         <TableRow>
                           <TableHead>Product</TableHead>
-                          <TableHead>Ml</TableHead>
+                          <TableHead>Size</TableHead>
                           <TableHead>ean</TableHead>
                           <TableHead>Category</TableHead>
                           <TableHead>Price</TableHead>
