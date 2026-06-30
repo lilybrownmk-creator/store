@@ -616,7 +616,7 @@ export default function Shop() {
     <div className="min-h-screen bg-[#F5F3F0]">
 
       {/* ── Header ── */}
-      <header className="relative z-99999 bg-[#3D4F3D]">
+      <header className="relative z-50 bg-[#3D4F3D]">
         <div className="bg-[#2F4E3C] px-4 lg:px-8">
           <div className="mx-1 flex items-end pb-3 justify-between h-52 md:items-center md:pb-0 md:h-56">
 
