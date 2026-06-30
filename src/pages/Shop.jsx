@@ -835,7 +835,13 @@ export default function Shop() {
           </div>
         </div>
 
-        {/* Search bar */}
+        {/* На почетокот на твојата компонента, провери дали имаш увезено рутер.
+    Ако е Next.js (Pages router): const router = useRouter();
+    Ако е Next.js (App router): const router = useRouter(); (од 'next/navigation')
+    Ако е React Router: const navigate = useNavigate();
+*/}
+
+{/* Search bar */}
 <AnimatePresence>
   {searchOpen && (
     <motion.div
@@ -843,9 +849,6 @@ export default function Shop() {
       animate={{ height: 'auto', opacity: 1 }}
       exit={{ height: 0, opacity: 0 }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
-      /* ОБЈАСНУВАЊЕ: Го менуваме фиксниот 'overflow-hidden' со услови.
-         Кога се затвора мора да има overflow-hidden, но кога е отворено го тргаме 
-         за резултатите да можат да излезат „надвор“ и да се прикажат најгоре. */
       className={`bg-[#3D4F3D] border-t border-white/10 ${
         searchOpen ? 'overflow-visible' : 'overflow-hidden'
       }`}
@@ -868,18 +871,34 @@ export default function Shop() {
               .filter(p => p.name?.toLowerCase().includes(searchQuery.toLowerCase()))
               .slice(0, 6)
             return suggestions.length > 0 ? (
-              /* Додадов и уште повисок z-index (z-[999]) за секој случај 
-                 ако производите подолу имаат некакви свои анимации */
               <div className="absolute top-full left-0 right-0 bg-white border border-[#3D4F3D]/10 z-[999] shadow-2xl mt-1">
                 {suggestions.map(p => (
                   <button
                     key={p.id}
                     style={{ touchAction: 'manipulation' }}
-                    onClick={() => { setSearchQuery(p.name); setSearchOpen(false) }}
-                    className="w-full text-left px-4 py-2.5 text-xs text-[#3D4F3D] tracking-wide hover:bg-[#F5F3F0] flex items-center gap-3 border-b border-[#3D4F3D]/5 last:border-0"
+                    onClick={() => {
+                      {/* 1. Го затвораме пребарувањето */}
+                      setSearchOpen(false);
+                      setSearchQuery(''); {/* Го ресетираме пребарувањето за следниот пат */}
+                      
+                      {/* 2. Насочување директно до производот! 
+                          Смени го ова во однос на твојот рутер (на пр. navigate(`/product/${p.id}`) за React Router) */}
+                      router.push(`/products/${p.id}`); 
+                    }}
+                    className="w-full text-left px-4 py-2.5 text-xs text-[#3D4F3D] tracking-wide hover:bg-[#F5F3F0] flex items-center justify-between border-b border-[#3D4F3D]/5 last:border-0"
                   >
-                    {p.image_url && <img src={p.image_url} alt="" className="w-8 h-8 object-cover bg-[#E8E4DF] flex-shrink-0" />}
-                    <span className="line-clamp-1">{p.name}</span>
+                    {/* Лева страна: Слика и Име */}
+                    <div className="flex items-center gap-3 min-w-0">
+                      {p.image_url && (
+                        <img src={p.image_url} alt="" className="w-8 h-8 object-cover bg-[#E8E4DF] flex-shrink-0" />
+                      )}
+                      <span className="line-clamp-1 font-medium">{p.name}</span>
+                    </div>
+
+                    {/* Десна страна: ЦЕНА (Ново) */}
+                    <span className="text-[11px] font-semibold text-[#3D4F3D]/80 ml-2 whitespace-nowrap">
+                      {p.price} ден. {/* Ако валутата ти е во друг формат, смени го ова (на пр. {p.price} €) */}
+                    </span>
                   </button>
                 ))}
               </div>
