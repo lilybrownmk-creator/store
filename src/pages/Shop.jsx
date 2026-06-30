@@ -836,52 +836,60 @@ export default function Shop() {
         </div>
 
         {/* Search bar */}
-        <AnimatePresence>
-          {searchOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="bg-[#3D4F3D] border-t border-white/10 overflow-hidden"
-            >
-              <div className="px-4 lg:px-8 py-4">
-                <div className="max-w-xl mx-auto relative">
-                  <Input
-                    placeholder={t('search_ph')}
-                    value={searchQuery}
-                    onChange={e => setSearchQuery(e.target.value)}
-                    className="w-full bg-white/10 border-white/20 text-white placeholder:text-white/50 rounded-none h-12 pl-4 pr-12 text-sm tracking-wide"
-                    autoFocus
-                  />
-                  <button onClick={() => setSearchOpen(false)} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white">
-                    <X className="w-5 h-5" />
+<AnimatePresence>
+  {searchOpen && (
+    <motion.div
+      initial={{ height: 0, opacity: 0 }}
+      animate={{ height: 'auto', opacity: 1 }}
+      exit={{ height: 0, opacity: 0 }}
+      transition={{ duration: 0.3, ease: 'easeInOut' }}
+      /* ОБЈАСНУВАЊЕ: Го менуваме фиксниот 'overflow-hidden' со услови.
+         Кога се затвора мора да има overflow-hidden, но кога е отворено го тргаме 
+         за резултатите да можат да излезат „надвор“ и да се прикажат најгоре. */
+      className={`bg-[#3D4F3D] border-t border-white/10 ${
+        searchOpen ? 'overflow-visible' : 'overflow-hidden'
+      }`}
+    >
+      <div className="px-4 lg:px-8 py-4">
+        <div className="max-w-xl mx-auto relative">
+          <Input
+            placeholder={t('search_ph')}
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            className="w-full bg-white/10 border-white/20 text-white placeholder:text-white/50 rounded-none h-12 pl-4 pr-12 text-sm tracking-wide"
+            autoFocus
+          />
+          <button onClick={() => setSearchOpen(false)} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white">
+            <X className="w-5 h-5" />
+          </button>
+          
+          {searchQuery.length > 0 && (() => {
+            const suggestions = (products || [])
+              .filter(p => p.name?.toLowerCase().includes(searchQuery.toLowerCase()))
+              .slice(0, 6)
+            return suggestions.length > 0 ? (
+              /* Додадов и уште повисок z-index (z-[999]) за секој случај 
+                 ако производите подолу имаат некакви свои анимации */
+              <div className="absolute top-full left-0 right-0 bg-white border border-[#3D4F3D]/10 z-[999] shadow-2xl mt-1">
+                {suggestions.map(p => (
+                  <button
+                    key={p.id}
+                    style={{ touchAction: 'manipulation' }}
+                    onClick={() => { setSearchQuery(p.name); setSearchOpen(false) }}
+                    className="w-full text-left px-4 py-2.5 text-xs text-[#3D4F3D] tracking-wide hover:bg-[#F5F3F0] flex items-center gap-3 border-b border-[#3D4F3D]/5 last:border-0"
+                  >
+                    {p.image_url && <img src={p.image_url} alt="" className="w-8 h-8 object-cover bg-[#E8E4DF] flex-shrink-0" />}
+                    <span className="line-clamp-1">{p.name}</span>
                   </button>
-                  {searchQuery.length > 0 && (() => {
-                    const suggestions = (products || [])
-                      .filter(p => p.name?.toLowerCase().includes(searchQuery.toLowerCase()))
-                      .slice(0, 6)
-                    return suggestions.length > 0 ? (
-                      <div className="absolute top-full left-0 right-0 bg-white border border-[#3D4F3D]/10 z-50 shadow-lg mt-1">
-                        {suggestions.map(p => (
-                          <button
-                            key={p.id}
-                            style={{ touchAction: 'manipulation' }}
-                            onClick={() => { setSearchQuery(p.name); setSearchOpen(false) }}
-                            className="w-full text-left px-4 py-2.5 text-xs text-[#3D4F3D] tracking-wide hover:bg-[#F5F3F0] flex items-center gap-3 border-b border-[#3D4F3D]/5 last:border-0"
-                          >
-                            {p.image_url && <img src={p.image_url} alt="" className="w-8 h-8 object-cover bg-[#E8E4DF] flex-shrink-0" />}
-                            <span className="line-clamp-1">{p.name}</span>
-                          </button>
-                        ))}
-                      </div>
-                    ) : null
-                  })()}
-                </div>
+                ))}
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            ) : null
+          })()}
+        </div>
+      </div>
+    </motion.div>
+  )}
+</AnimatePresence>
       </header>
 
       {/* ── Category nav ── */}
