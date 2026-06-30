@@ -862,7 +862,7 @@ export default function Shop() {
                       .filter(p => p.name?.toLowerCase().includes(searchQuery.toLowerCase()))
                       .slice(0, 6)
                     return suggestions.length > 0 ? (
-                      <div className="absolute top-full left-0 right-0 bg-white border border-[#3D4F3D]/10 z-[9999] shadow-lg mt-1">
+                      <div className="absolute top-full left-0 right-0 bg-white border border-[#3D4F3D]/10 z-50 shadow-lg mt-1">
                         {suggestions.map(p => (
                           <button
                             key={p.id}
