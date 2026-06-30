@@ -342,6 +342,7 @@ export default function Admin() {
                         {filteredProducts.map(product => (
                           <TableRow key={product.id}>
                             <TableCell className="font-medium max-w-xs truncate">{product.name}</TableCell>
+                            <TableCell className="font-medium max-w-xs truncate">{product.size}</TableCell>
                             <TableCell className="text-stone-500 text-sm">{product.sku || '-'}</TableCell>
                             <TableCell><Badge variant="secondary">{product.category}</Badge></TableCell>
                             <TableCell>{Number(product.price).toLocaleString('mk-MK')} ден</TableCell>
