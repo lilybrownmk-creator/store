@@ -10,43 +10,8 @@ export default function OrderConfirmation() {
 
   useEffect(() => {
     if (!orderId) return
-
-    // 1. Ја влечеме нарачката од базата на податоци
-    supabase
-      .from('orders')
-      .select('*')
-      .eq('id', orderId)
-      .single()
-      .then(({ data }) => {
-        if (data) {
-          setOrder(data)
-
-          // 2. ИСПРАЌАЊЕ МЕЈЛ: Само ако се работи за плаќање на рака (или статус 'pending')
-          // и сè уште не сме го испратиле мејлот во оваа сесија
-          const emailSentKey = `email_sent_${orderId}`
-          const alreadySent = sessionStorage.getItem(emailSentKey)
-
-          if (data.status === 'pending' && !alreadySent) {
-            console.log('[OrderConfirmation] Triggering confirmation email...')
-            
-            supabase.functions
-              .invoke('send-email', {
-                body: { 
-                  type: 'order_confirmed', 
-                  order_id: orderId 
-                },
-              })
-              .then(() => {
-                // Го зачувуваме во сесијата дека мејлот е пратен, за да не се праќа повторно при рефреш
-                sessionStorage.setItem(emailSentKey, 'true')
-                console.log('[OrderConfirmation] Email sent successfully!')
-              })
-              .catch((err) => {
-                console.error('[OrderConfirmation] Error invoking send-email function:', err)
-              })
-          }
-        }
-      })
+    supabase.from('orders').select('*').eq('id', orderId).single()
+      .then(({ data }) => setOrder(data))
   }, [orderId])
 
   return (
