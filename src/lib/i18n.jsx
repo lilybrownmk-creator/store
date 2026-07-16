@@ -137,14 +137,6 @@ export const translations = {
     order_confirmed:   'ORDER CONFIRMED',
     payment_received:  'Payment received. We will contact you to confirm delivery.',
     continue_shopping: 'CONTINUE SHOPPING',
-    // ... Dodadeni prevodi 
-delivery_info_title: 'DELIVERY',
-delivery_info_desc: 'Orders are delivered within 2–3 business days.',
-pay_on_delivery_banner: 'Payment is on delivery',
-make_order_btn: 'PLACE ORDER',
-pickup_info_title: 'Store Pickup',
-pickup_info_desc: 'We will contact you when your order is ready for pickup.',
-cargo_disclaimer: '* Delivery price may vary based on location and Cargo Express tariffs. The final price will be confirmed upon delivery.',
 
     // Wishlist page
     back_to_shop:    'BACK TO SHOP',
@@ -331,14 +323,6 @@ cargo_disclaimer: '* Delivery price may vary based on location and Cargo Express
     order_confirmed:   'НАРАЧКАТА Е ПОТВРДЕНА',
     payment_received:  'Плаќањето е примено. Ќе ве контактираме за потврда на доставата.',
     continue_shopping: 'ПРОДОЛЖИ СО КУПУВАЊЕ',
-    // ... Dodadeni prevodi MK:
-delivery_info_title: 'Достава',
-delivery_info_desc: 'Нарачките се доставуваат во рок од 2–3 работни дена.',
-pay_on_delivery_banner: 'Плаќањето е при достава',
-make_order_btn: 'НАПРАВИ НАРАЧКА',
-pickup_info_title: 'Преземање од продавница',
-pickup_info_desc: 'Ќе бидете контактирани кога нарачката ќе биде подготвена за преземање.',
-cargo_disclaimer: '* Цената за достава може да варира во зависност од локацијата и тарифникот на Карго Експрес. Конечната цена ќе биде потврдена при испорака.',
 
     // Wishlist page
     back_to_shop:    'НАЗАД ВО ПРОДАВНИЦАТА',
