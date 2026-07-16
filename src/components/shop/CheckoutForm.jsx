@@ -67,7 +67,7 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
   }, [])
 
   const subtotal   = cart.reduce((s, i) => s + i.price * i.quantity, 0)
-  const deliveryFee = deliveryMethod === 'pickup' ? 0 : (subtotal >= 3000 ? 0 : 0)
+  const deliveryFee = deliveryMethod === 'pickup' ? 0 : (subtotal >= 3000 ? 0 : 170)
   const total      = subtotal + deliveryFee
   const totalItems = cart.reduce((s, i) => s + i.quantity, 0)
 
@@ -320,23 +320,23 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
             )}
           </div>
 
-         <div className="bg-white p-3 border border-[#3D4F3D]/10">
+          <div className="bg-white p-3 border border-[#3D4F3D]/10">
   {deliveryMethod === 'delivery' ? (
     <>
       <p className="text-sm text-[#3D4F3D] font-medium">
-        {t('delivery_info_title')}
+        Достава
       </p>
       <p className="text-xs text-[#3D4F3D]/70 mt-1">
-        {t('delivery_info_desc')}
+        Нарачките се доставуваат во рок од 2–3 работни дена.
       </p>
     </>
   ) : (
     <>
       <p className="text-sm text-[#3D4F3D] font-medium">
-        {t('pickup_info_title')}
+        Преземање од продавница
       </p>
       <p className="text-xs text-[#3D4F3D]/70 mt-1">
-        {t('pickup_info_desc')}
+        Ќе бидете контактирани кога нарачката ќе биде подготвена за преземање.
       </p>
     </>
   )}
@@ -433,9 +433,9 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
               </span>
               <span>{deliveryFee === 0 ? t('free') : formatPrice(deliveryFee)}</span>
             </div>
-            {deliveryMethod === 'delivery' && deliveryFee > 0 && (
+            {deliveryMethod === 'delivery' && (
   <p className="text-[10px] text-[#3D4F3D]/50 italic">
-    {t('cargo_disclaimer')}
+    * Цената за достава може да варира во зависност од локацијата и тарифникот на Карго Експрес. Конечната цена ќе биде потврдена при испорака.
   </p>
 )}
             <Separator className="bg-[#3D4F3D]/10" />
@@ -444,12 +444,12 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
               <span>{formatPrice(total)}</span>
             </div>
           </div>
-<div className="mb-3 p-3 border border-[#3D4F3D]/20 bg-[#3D4F3D]/5 text-center">
+       <div className="mt-3 p-3 border border-[#3D4F3D]/20 bg-[#3D4F3D]/5 text-center">
   <p className="text-sm font-medium text-[#3D4F3D]">
-    {t('pay_on_delivery_banner')}
+    Плаќањето е при достава
   </p>
 </div>
-<Button
+          <Button
   type="button"
   className="w-full bg-[#3D4F3D] hover:bg-[#2D3F2D] text-white h-12 rounded-none"
   onClick={async () => {
@@ -458,8 +458,6 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
         ...formData,
         delivery_method: deliveryMethod,
         delivery_date: null,
-        // Забелешка: користиме динамичен превод и за градот/адресата ако е потребно во базата, 
-        // но за базата на податоци е подобро да си остане стандардно како што ти е.
         delivery_address:
           deliveryMethod === 'pickup'
             ? '19, Luj Paster str, Skopje 1000'
@@ -487,14 +485,16 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
       })
 
       toast.success('Order created successfully')
+
       onOrderSuccess?.()
+
       navigate(`/order-confirmation/${order.id}`)
     } catch (err) {
       toast.error(err.message)
     }
   }}
 >
-  {t('make_order_btn')}
+  НАПРАВИ НАРАЧКА
 </Button>
   
           {/* Payment coming soon */}
