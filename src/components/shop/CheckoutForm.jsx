@@ -494,7 +494,7 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
     }
   }}
 >
-  НАПРАВИ НАРАЧКА
+  CHECKOUT
 </Button>
   
           {/* Payment coming soon */}
