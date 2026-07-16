@@ -67,7 +67,7 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
   }, [])
 
   const subtotal   = cart.reduce((s, i) => s + i.price * i.quantity, 0)
-  const deliveryFee = deliveryMethod === 'pickup' ? 0 : (subtotal >= 9000 ? 0 : 370)
+  const deliveryFee = deliveryMethod === 'pickup' ? 0 : (subtotal >= 3000 ? 0 : 170)
   const total      = subtotal + deliveryFee
   const totalItems = cart.reduce((s, i) => s + i.quantity, 0)
 
@@ -433,6 +433,11 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
               </span>
               <span>{deliveryFee === 0 ? t('free') : formatPrice(deliveryFee)}</span>
             </div>
+            {deliveryMethod === 'delivery' && (
+  <p className="text-[10px] text-[#3D4F3D]/50 italic">
+    * Цената за достава може да варира во зависност од локацијата и тарифникот на Карго Експрес. Конечната цена ќе биде потврдена при испорака.
+  </p>
+)}
             <Separator className="bg-[#3D4F3D]/10" />
             <div className="flex justify-between text-[#3D4F3D] font-medium">
               <span className="tracking-wider text-xs">{t('total')}</span>
