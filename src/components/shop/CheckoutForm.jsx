@@ -494,7 +494,7 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
     }
   }}
 >
-  CHECKOUT
+  checkout
 </Button>
   
           {/* Payment coming soon */}
