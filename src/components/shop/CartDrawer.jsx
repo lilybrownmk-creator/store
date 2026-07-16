@@ -12,7 +12,7 @@ export default function CartDrawer({ open, onClose, cart, onUpdateQuantity, onRe
   const t = useT()
 
   const subtotal      = cart.reduce((s, item) => s + item.price * item.quantity, 0)
-  const deliveryFee   = subtotal >= 3000 ? 0 : 170
+  const deliveryFee   = subtotal >= 3000 ? 0 : 0
   const total         = subtotal + deliveryFee
   const totalQty      = cart.reduce((s, item) => s + item.quantity, 0)
   const freeDeliveryPct = Math.min((subtotal / 3000) * 100, 100)
