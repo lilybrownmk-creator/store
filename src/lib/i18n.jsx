@@ -149,7 +149,7 @@ cargo_disclaimer: '* Delivery price may vary based on location and Cargo Express
 "Please enter your phone number": "Please enter your phone number",
 "Please enter a delivery address": "Please enter a delivery address",
 "Please enter a city": "Please enter a city",
-"Please enter a postal code": "Please enter a postal code"
+"Please enter a postal code": "Please enter a postal code",
 
 
     // Wishlist page
