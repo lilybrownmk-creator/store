@@ -349,7 +349,7 @@ cargo_disclaimer: '* Цената за достава може да варира
 "Please enter your phone number": "Ве молиме внесете телефонски број",
 "Please enter a delivery address": "Ве молиме внесете адреса за достава",
 "Please enter a city": "Ве молиме внесете град",
-"Please enter a postal code": "Ве молиме внесете поштенски број"
+"Please enter a postal code": "Ве молиме внесете поштенски број",
 
 
     // Wishlist page
