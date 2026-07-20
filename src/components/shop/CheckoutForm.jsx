@@ -207,14 +207,53 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
       setStep('form')
     },
   })
+  const validateForm = () => {
+  // 1. Проверка за име и презиме
+  if (!formData.customer_name || !formData.customer_name.trim()) {
+    toast.error(t('Please enter your name and last name'))
+    return false
+  }
+
+  // 2. Проверка за телефон
+  if (!formData.customer_phone || !formData.customer_phone.trim()) {
+    toast.error(t('Please enter your phone number'))
+    return false
+  }
+
+  // 3. Проверка за датум (ако користите избор на датум)
+  if (!deliveryDate) {
+    toast.error(t('Please select a date') || 'Please select a date')
+    return false
+  }
+
+  // 4. Проверки за достава (само кога е избрана достава до адреса)
+  if (deliveryMethod === 'delivery') {
+    if (!formData.delivery_address || !formData.delivery_address.trim()) {
+      toast.error(t('Please enter a delivery address'))
+      return false
+    }
+    if (!formData.delivery_city || !formData.delivery_city.trim()) {
+      toast.error(t('Please enter a city'))
+      return false
+    }
+    if (!formData.delivery_postal_code || !formData.delivery_postal_code.trim()) {
+      toast.error(t('Please enter a postal code'))
+      return false
+    }
+  }
+
+  return true
+}
 
   const handleSubmit = e => {
-    e.preventDefault()
-    if (deliveryMethod === 'delivery' && !formData.delivery_address) {
-      return toast.error('Please enter a delivery address')
-    }
-    createAndPay.mutate()
+  if (e) e.preventDefault()
+
+  if (!validateForm()) {
+    return
   }
+
+  createAndPay.mutate()
+}
 
   // ── Success screen ───────────────────────────────────────────────────────
   if (orderSuccess || step === 'success') {
