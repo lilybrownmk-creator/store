@@ -1,46 +1,82 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@/components/ui/separator'
-import { Store, Truck, CheckCircle, Loader2 } from 'lucide-react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Loader2, CheckCircle, Store, Truck, CreditCard } from 'lucide-react'
+import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
 import { createOrder } from '@/api/orders'
+import { supabase } from '@/lib/supabaseClient'
 import { formatPrice } from '@/lib/utils'
 import { useT } from '@/lib/i18n'
 import PWAInstallPrompt from '@/components/shop/PWAInstallPrompt'
 
+// ── Delivery date helpers ────────────────────────────────────────────────────
+
+
+// ── Load Revolut embed script once ──────────────────────────────────────────
+function useRevolutScript() {
+  const [ready, setReady] = useState(!!window.RevolutCheckout)
+  useEffect(() => {
+    if (window.RevolutCheckout) { setReady(true); return }
+    const s = document.createElement('script')
+    const revolutEnv = import.meta.env.VITE_REVOLUT_ENV
+    s.src = revolutEnv === 'sandbox'
+      ? 'https://sandbox-merchant.revolut.com/embed.js'
+      : 'https://merchant.revolut.com/embed.js'
+    s.async = true
+    s.onload = () => setReady(true)
+    s.onerror = () => { /* Revolut embed script failed to load */ }
+    document.head.appendChild(s)
+  }, [])
+  return ready
+}
+
+// ── Steps ────────────────────────────────────────────────────────────────────
+// 'form'    → customer fills in details
+// 'paying'  → Revolut widget is being prepared / displayed
+// 'success' → payment done
+
 export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orderSuccess }) {
   const t = useT()
   const navigate = useNavigate()
+  const revolutScriptReady = useRevolutScript()
 
-  const [loading, setLoading] = useState(false)
+  const [step, setStep]                 = useState('form')  // 'form' | 'paying' | 'success'
   const [deliveryMethod, setDeliveryMethod] = useState('delivery')
   const [formData, setFormData] = useState({
-    customer_name: '',
-    customer_email: '',
-    customer_phone: '',
-    delivery_address: '',
-    delivery_city: '',
-    delivery_postal_code: '',
-    notes: '',
+    customer_name: '', customer_email: '', customer_phone: '',
+    delivery_address: '', delivery_city: '', delivery_postal_code: '', notes: '',
   })
   const [giftWrap, setGiftWrap] = useState(false)
   const [giftMessage, setGiftMessage] = useState('')
+  const [createdOrderId, setCreatedOrderId] = useState(null)
+  const [canApplePay, setCanApplePay] = useState(false)
+  const revolutInstanceRef = useRef(null)
 
-  const subtotal = cart.reduce((s, i) => s + i.price * i.quantity, 0)
-  const deliveryFee = deliveryMethod === 'pickup' ? 0 : 0 // Промотивно бесплатна достава
-  const total = subtotal + deliveryFee
+  // Detect Apple Pay support (Safari on Apple device with card set up)
+  useEffect(() => {
+    if (window.ApplePaySession?.canMakePayments?.()) {
+      setCanApplePay(true)
+    }
+  }, [])
+
+  const subtotal   = cart.reduce((s, i) => s + i.price * i.quantity, 0)
+  const deliveryFee = deliveryMethod === 'pickup' ? 0 : (subtotal >= 3000 ? 0 : 170)
+  const total      = subtotal + deliveryFee
   const totalItems = cart.reduce((s, i) => s + i.quantity, 0)
 
   const set = patch => setFormData(prev => ({ ...prev, ...patch }))
 
-  // Reset кога се затвора / го зема реферал белешката од localStorage
+  // ── Reset when dialog closes / pre-fill bundle note when it opens ────────
   useEffect(() => {
     if (open) {
+      // If coming from gift box builder, pre-fill the assembly note
       const bundleNote = localStorage.getItem('zr_bundle_note') || ''
       if (bundleNote) {
         setFormData(prev => ({ ...prev, notes: bundleNote }))
@@ -48,39 +84,38 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
       }
       return
     }
-
-    // Reset при затворање
+    // Dialog closed — reset
+    setStep('form')
+    setCreatedOrderId(null)
     setGiftWrap(false)
     setGiftMessage('')
     setFormData({
       customer_name: '', customer_email: '', customer_phone: '',
       delivery_address: '', delivery_city: '', delivery_postal_code: '', notes: '',
     })
+    // Destroy any lingering Revolut widget instance
+    if (revolutInstanceRef.current) {
+      try { revolutInstanceRef.current.destroy() } catch (_) {}
+      revolutInstanceRef.current = null
+    }
   }, [open])
 
-  // Регуларен submit со целосна HTML5 и JS валидација
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    if (deliveryMethod === 'delivery' && !formData.delivery_address) {
-      return toast.error('Ве молиме внесете адреса за достава')
-    }
-
-    setLoading(true)
-
-    try {
+  // ── Step 1: create Supabase order → call Edge Fn → open Revolut ──────────
+  const createAndPay = useMutation({
+    mutationFn: async () => {
+      // 1a. Create the order record (unpaid)
       const order = await createOrder({
         ...formData,
-        delivery_method: deliveryMethod,
-        delivery_date: null,
-        delivery_address: deliveryMethod === 'pickup' ? '19, Luj Paster str, Skopje 1000' : formData.delivery_address,
-        delivery_city: deliveryMethod === 'pickup' ? 'Skopje' : formData.delivery_city,
+        delivery_method:      deliveryMethod,
+        delivery_date:        null,
+        delivery_address:     deliveryMethod === 'pickup' ? '19, Luj Paster str, Skopje 1000' : formData.delivery_address,
+        delivery_city:        deliveryMethod === 'pickup' ? 'Skopje' : formData.delivery_city,
         delivery_postal_code: deliveryMethod === 'pickup' ? '1000' : formData.delivery_postal_code,
         items: cart.map(item => ({
-          product_id: item.id,
+          product_id:   item.id,
           product_name: item.name,
-          quantity: item.quantity,
-          price: item.price,
+          quantity:     item.quantity,
+          price:        item.price,
         })),
         subtotal,
         delivery_fee: deliveryFee,
@@ -90,18 +125,99 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
         gift_message: giftMessage,
       })
 
-      toast.success('Нарачката е успешно направена!')
-      onOrderSuccess?.()
-      navigate(`/order-confirmation/${order.id}`)
-    } catch (err) {
-      toast.error(err.message || 'Настана грешка при креирање на нарачката')
-    } finally {
-      setLoading(false)
+      setCreatedOrderId(order.id)
+
+      // 1b. Create Revolut order via Edge Function
+      const { data, error } = await supabase.functions.invoke('create-revolut-order', {
+        body: {
+          order_id:       order.id,
+          amount_eur:     Math.round((total / 61.5) * 100) / 100,
+          customer_email: formData.customer_email || undefined,
+        },
+      })
+
+      if (error) {
+        // Extract the real error body from Supabase FunctionsHttpError
+        let detail = error.message
+        try { const body = await error.context?.json?.(); detail = body?.error ?? body?.message ?? error.message } catch (_) {}
+        throw new Error(detail)
+      }
+      if (data?.error) throw new Error(data.error)
+      if (!data?.public_id) throw new Error('No public_id returned from Revolut')
+
+      return { order, public_id: data.public_id }
+    },
+
+    onSuccess: async ({ public_id }) => {
+      setStep('paying')
+
+      // 2. Wait for Revolut script then open the payment popup
+      const launchWidget = () => {
+        window.RevolutCheckout(public_id).then(instance => {
+          revolutInstanceRef.current = instance
+          instance.payWithPopup({
+            onSuccess() {
+              revolutInstanceRef.current = null
+              setStep('success')
+              onOrderSuccess()
+              toast.success('Payment successful!', {
+                style: { background: '#3D4F3D', color: 'white', border: 'none' },
+              })
+              const confirmedOrderId = createdOrderId
+              if (confirmedOrderId) {
+                setTimeout(() => navigate(`/order-confirmation/${confirmedOrderId}`), 800)
+              }
+            },
+            onError(message) {
+              revolutInstanceRef.current = null
+              toast.error(`Payment failed: ${message}`)
+              setStep('form')
+            },
+            onCancel() {
+              revolutInstanceRef.current = null
+              toast('Payment cancelled', { icon: '↩' })
+              setStep('form')
+            },
+          })
+        }).catch(err => {
+          toast.error(`Could not open payment: ${err.message}`)
+          setStep('form')
+        })
+      }
+
+      // Revolut script may load async — poll until ready
+      if (window.RevolutCheckout) {
+        launchWidget()
+      } else {
+        const poll = setInterval(() => {
+          if (window.RevolutCheckout) { clearInterval(poll); launchWidget() }
+        }, 200)
+        setTimeout(() => {
+          clearInterval(poll)
+          if (!window.RevolutCheckout) {
+            toast.error('Could not load Revolut Pay. Please refresh and try again.')
+            setStep('form')
+          }
+        }, 10000)
+      }
+    },
+
+    onError: err => {
+      toast.error(`Could not process order: ${err.message}`)
+      setStep('form')
+    },
+  })
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    if (deliveryMethod === 'delivery' && !formData.delivery_address) {
+      return toast.error('Please enter a delivery address')
     }
+    createAndPay.mutate()
   }
 
-  // Поглед за успешна нарачка
-  if (orderSuccess) {
+  // ── Success screen ───────────────────────────────────────────────────────
+  if (orderSuccess || step === 'success') {
     return (
       <>
         <Dialog open={open} onOpenChange={onClose}>
@@ -129,6 +245,28 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
     )
   }
 
+  // ── Paying screen (Revolut widget opened in popup) ───────────────────────
+  if (step === 'paying') {
+    return (
+      <Dialog open={open} onOpenChange={() => {}} modal={false}>
+        <DialogContent className="sm:max-w-md bg-[#F5F3F0] border-none rounded-none">
+          <div className="text-center py-12 space-y-5">
+            <Loader2 className="w-10 h-10 animate-spin text-[#3D4F3D] mx-auto" />
+            <h3 className="text-sm text-[#3D4F3D] tracking-[0.2em]">{t('revolut_opening')}</h3>
+            <p className="text-xs text-[#3D4F3D]/50">{t('complete_popup')}</p>
+            <button
+              onClick={() => setStep('form')}
+              className="text-xs text-[#3D4F3D]/40 underline hover:text-[#3D4F3D]/60 mt-4"
+            >
+              {t('back_to_order')}
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    )
+  }
+
+  // ── Checkout form ────────────────────────────────────────────────────────
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto bg-[#F5F3F0] border-none rounded-none">
@@ -136,16 +274,15 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
           <DialogTitle className="text-[#3D4F3D] text-xs tracking-[0.2em]">{t('delivery_details')}</DialogTitle>
         </DialogHeader>
 
-        {/* Формата овде го управува submit настанот */}
-        <form onSubmit={handleSubmit} className="space-y-6 mt-4">
+        <form onSubmit={e => e.preventDefault()} className="space-y-6 mt-4">
 
-          {/* Опции за достава */}
+          {/* Delivery method */}
           <div className="space-y-3">
             <Label className="text-[10px] text-[#3D4F3D]/70 tracking-wider">{t('delivery_method')}</Label>
             <div className="grid grid-cols-2 gap-3">
               {[
                 { value: 'delivery', icon: Truck, titleKey: 'delivery_label', subKey: 'delivery_sub' },
-                { value: 'pickup', icon: Store, titleKey: 'pickup_label', subKey: 'pickup_sub' },
+                { value: 'pickup',   icon: Store,  titleKey: 'pickup_label',   subKey: 'pickup_sub' },
               ].map(opt => (
                 <button
                   type="button"
@@ -174,105 +311,87 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
                 </button>
               ))}
             </div>
-
-            <div className="bg-white p-3 border border-[#3D4F3D]/10 mt-2">
-              {deliveryMethod === 'delivery' ? (
-                <>
-                  <p className="text-sm text-[#3D4F3D] font-medium">Достава</p>
-                  <p className="text-xs text-[#3D4F3D]/70 mt-1">
-                    Нарачките се доставуваат во рок од 2–3 работни дена.
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p className="text-sm text-[#3D4F3D] font-medium">Преземање од продавница</p>
-                  <p className="text-xs text-[#3D4F3D]/70 mt-1">
-                    Луј Пастер 19, 1000 Скопје. Ќе бидете контактирани кога нарачката ќе биде подготвена.
-                  </p>
-                </>
-              )}
-            </div>
+            {deliveryMethod === 'pickup' && (
+              <div className="bg-white p-3 border border-[#3D4F3D]/10">
+                <p className="text-[10px] text-[#3D4F3D]/70 tracking-wider mb-1">{t('pickup_location')}</p>
+                <p className="text-sm text-[#3D4F3D]">{t('budapest_store')}</p>
+                <p className="text-xs text-[#3D4F3D]/60">19, Luj Paster str, Skopje 1000</p>
+              </div>
+            )}
           </div>
+
+          <div className="bg-white p-3 border border-[#3D4F3D]/10">
+  {deliveryMethod === 'delivery' ? (
+    <>
+      <p className="text-sm text-[#3D4F3D] font-medium">
+        Достава
+      </p>
+      <p className="text-xs text-[#3D4F3D]/70 mt-1">
+        Нарачките се доставуваат во рок од 2–3 работни дена.
+      </p>
+    </>
+  ) : (
+    <>
+      <p className="text-sm text-[#3D4F3D] font-medium">
+        Преземање од продавница
+      </p>
+      <p className="text-xs text-[#3D4F3D]/70 mt-1">
+        Ќе бидете контактирани кога нарачката ќе биде подготвена за преземање.
+      </p>
+    </>
+  )}
+</div>
 
           <Separator className="bg-[#3D4F3D]/10" />
 
-          {/* Податоци за купувачот */}
+          {/* Customer info */}
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
               <Label className="text-[10px] text-[#3D4F3D]/70 tracking-wider">{t('full_name')}</Label>
-              <Input
-                required
-                value={formData.customer_name}
-                onChange={e => set({ customer_name: e.target.value })}
-                className="mt-2 bg-white border-[#3D4F3D]/20 rounded-none h-11 text-[#3D4F3D] focus:border-[#3D4F3D] focus:ring-0"
-              />
+              <Input required value={formData.customer_name} onChange={e => set({ customer_name: e.target.value })}
+                className="mt-2 bg-white border-[#3D4F3D]/20 rounded-none h-11 text-[#3D4F3D] focus:border-[#3D4F3D] focus:ring-0" />
             </div>
             <div>
               <Label className="text-[10px] text-[#3D4F3D]/70 tracking-wider">{t('phone')}</Label>
-              <Input
-                type="tel"
-                required
-                value={formData.customer_phone}
-                onChange={e => set({ customer_phone: e.target.value })}
-                className="mt-2 bg-white border-[#3D4F3D]/20 rounded-none h-11 text-[#3D4F3D] focus:border-[#3D4F3D] focus:ring-0"
-              />
+              <Input type="tel" required value={formData.customer_phone} onChange={e => set({ customer_phone: e.target.value })}
+                className="mt-2 bg-white border-[#3D4F3D]/20 rounded-none h-11 text-[#3D4F3D] focus:border-[#3D4F3D] focus:ring-0" />
             </div>
             <div>
               <Label className="text-[10px] text-[#3D4F3D]/70 tracking-wider">{t('email')}</Label>
-              <Input
-                type="email"
-                required
-                value={formData.customer_email}
-                onChange={e => set({ customer_email: e.target.value })}
-                className="mt-2 bg-white border-[#3D4F3D]/20 rounded-none h-11 text-[#3D4F3D] focus:border-[#3D4F3D] focus:ring-0"
-              />
+              <Input type="email" value={formData.customer_email} onChange={e => set({ customer_email: e.target.value })}
+                className="mt-2 bg-white border-[#3D4F3D]/20 rounded-none h-11 text-[#3D4F3D] focus:border-[#3D4F3D] focus:ring-0" />
             </div>
 
             {deliveryMethod === 'delivery' && (
               <>
                 <div className="col-span-2">
                   <Label className="text-[10px] text-[#3D4F3D]/70 tracking-wider">{t('delivery_address')}</Label>
-                  <Input
-                    required
-                    value={formData.delivery_address}
-                    onChange={e => set({ delivery_address: e.target.value })}
-                    className="mt-2 bg-white border-[#3D4F3D]/20 rounded-none h-11 text-[#3D4F3D] focus:border-[#3D4F3D] focus:ring-0"
-                  />
+                  <Input required value={formData.delivery_address} onChange={e => set({ delivery_address: e.target.value })}
+                    className="mt-2 bg-white border-[#3D4F3D]/20 rounded-none h-11 text-[#3D4F3D] focus:border-[#3D4F3D] focus:ring-0" />
                 </div>
                 <div>
                   <Label className="text-[10px] text-[#3D4F3D]/70 tracking-wider">{t('city')}</Label>
-                  <Input
-                    required
-                    value={formData.delivery_city}
-                    onChange={e => set({ delivery_city: e.target.value })}
-                    className="mt-2 bg-white border-[#3D4F3D]/20 rounded-none h-11 text-[#3D4F3D] focus:border-[#3D4F3D] focus:ring-0"
-                  />
+                  <Input required value={formData.delivery_city} onChange={e => set({ delivery_city: e.target.value })}
+                    className="mt-2 bg-white border-[#3D4F3D]/20 rounded-none h-11 text-[#3D4F3D] focus:border-[#3D4F3D] focus:ring-0" />
                 </div>
                 <div>
                   <Label className="text-[10px] text-[#3D4F3D]/70 tracking-wider">{t('postal_code')}</Label>
-                  <Input
-                    required
-                    value={formData.delivery_postal_code}
-                    onChange={e => set({ delivery_postal_code: e.target.value })}
-                    className="mt-2 bg-white border-[#3D4F3D]/20 rounded-none h-11 text-[#3D4F3D] focus:border-[#3D4F3D] focus:ring-0"
-                  />
+                  <Input required value={formData.delivery_postal_code} onChange={e => set({ delivery_postal_code: e.target.value })}
+                    className="mt-2 bg-white border-[#3D4F3D]/20 rounded-none h-11 text-[#3D4F3D] focus:border-[#3D4F3D] focus:ring-0" />
                 </div>
               </>
             )}
 
             <div className="col-span-2">
               <Label className="text-[10px] text-[#3D4F3D]/70 tracking-wider">{t('notes_opt')}</Label>
-              <Textarea
-                value={formData.notes}
-                onChange={e => set({ notes: e.target.value })}
+              <Textarea value={formData.notes} onChange={e => set({ notes: e.target.value })}
                 placeholder={t('notes_ph')}
                 className="mt-2 bg-white border-[#3D4F3D]/20 rounded-none text-[#3D4F3D] focus:border-[#3D4F3D] focus:ring-0 resize-none placeholder:text-[#3D4F3D]/30 placeholder:text-xs"
-                rows={3}
-              />
+                rows={3} />
             </div>
           </div>
 
-          {/* Опции за подарок */}
+          {/* Gift options */}
           <div className="space-y-3 border-t border-[#3D4F3D]/10 pt-4 mt-2">
             <label className="flex items-center gap-3 cursor-pointer">
               <input
@@ -288,9 +407,7 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
             </label>
             {giftWrap && (
               <div>
-                <label className="text-[9px] tracking-[0.2em] text-[#3D4F3D]/60 uppercase block mb-1">
-                  Gift Message (optional)
-                </label>
+                <label className="text-[9px] tracking-[0.2em] text-[#3D4F3D]/60 uppercase block mb-1">Gift Message (optional)</label>
                 <textarea
                   value={giftMessage}
                   onChange={e => setGiftMessage(e.target.value)}
@@ -304,7 +421,7 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
 
           <Separator className="bg-[#3D4F3D]/10" />
 
-          {/* Преглед на цена */}
+          {/* Order summary */}
           <div className="bg-white p-4 space-y-3">
             <div className="flex justify-between text-sm text-[#3D4F3D]/70">
               <span className="tracking-wider text-xs">{t('items_count', totalItems)}</span>
@@ -316,25 +433,83 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
               </span>
               <span>{deliveryFee === 0 ? t('free') : formatPrice(deliveryFee)}</span>
             </div>
+            {deliveryMethod === 'delivery' && (
+  <p className="text-[10px] text-[#3D4F3D]/50 italic">
+    * Цената за достава може да варира во зависност од локацијата и тарифникот на Карго Експрес. Конечната цена ќе биде потврдена при испорака.
+  </p>
+)}
             <Separator className="bg-[#3D4F3D]/10" />
             <div className="flex justify-between text-[#3D4F3D] font-medium">
               <span className="tracking-wider text-xs">{t('total')}</span>
               <span>{formatPrice(total)}</span>
             </div>
           </div>
-
-          <div className="p-3 border border-[#3D4F3D]/20 bg-[#3D4F3D]/5 text-center">
-            <p className="text-sm font-medium text-[#3D4F3D]">Плаќањето е при достава</p>
-          </div>
-
-          {/* Копчето е type="submit" за да се активира HTML5 валидацијата */}
+       <div className="mt-3 p-3 border border-[#3D4F3D]/20 bg-[#3D4F3D]/5 text-center">
+  <p className="text-sm font-medium text-[#3D4F3D]">
+    Плаќањето е при достава
+  </p>
+</div>
           <Button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-[#3D4F3D] hover:bg-[#2D3F2D] text-white h-12 rounded-none tracking-widest text-xs"
-          >
-            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'НАПРАВИ НАРАЧКА'}
-          </Button>
+  type="button"
+  className="w-full bg-[#3D4F3D] hover:bg-[#2D3F2D] text-white h-12 rounded-none"
+  onClick={async () => {
+    try {
+      const order = await createOrder({
+        ...formData,
+        delivery_method: deliveryMethod,
+        delivery_date: null,
+        delivery_address:
+          deliveryMethod === 'pickup'
+            ? '19, Luj Paster str, Skopje 1000'
+            : formData.delivery_address,
+        delivery_city:
+          deliveryMethod === 'pickup'
+            ? 'Skopje'
+            : formData.delivery_city,
+        delivery_postal_code:
+          deliveryMethod === 'pickup'
+            ? '1000'
+            : formData.delivery_postal_code,
+        items: cart.map(item => ({
+          product_id: item.id,
+          product_name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+        })),
+        subtotal,
+        delivery_fee: deliveryFee,
+        total,
+        currency: 'MKD',
+        gift_wrap: giftWrap,
+        gift_message: giftMessage,
+      })
+
+      toast.success('Order created successfully')
+
+      onOrderSuccess?.()
+
+      navigate(`/order-confirmation/${order.id}`)
+    } catch (err) {
+      toast.error(err.message)
+    }
+  }}
+>
+  НАПРАВИ НАРАЧКА
+</Button>
+  
+          {/* Payment coming soon */}
+          <div className="border border-dashed border-[#3D4F3D]/30 p-6 flex flex-col items-center gap-3 bg-white/50">
+            <div className="flex items-center gap-2 text-[#3D4F3D]/40">
+              <div className="h-px w-8 bg-[#3D4F3D]/20" />
+              <CreditCard className="w-4 h-4" />
+              <div className="h-px w-8 bg-[#3D4F3D]/20" />
+            </div>
+            <p className="text-[10px] tracking-[0.25em] text-[#3D4F3D]/50 uppercase">Payment Options</p>
+            <p className="text-base tracking-[0.15em] text-[#3D4F3D] font-light">Coming Soon</p>
+            <p className="text-[10px] text-[#3D4F3D]/40 tracking-wider text-center leading-relaxed">
+              Online payment is on its way.<br />In the meantime, please reach us directly to complete your order.
+            </p>
+          </div>
         </form>
       </DialogContent>
     </Dialog>
