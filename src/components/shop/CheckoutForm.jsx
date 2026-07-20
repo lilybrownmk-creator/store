@@ -6,7 +6,8 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@/components/ui/separator'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Loader2, CheckCircle, Store, Truck, CreditCard } from 'lucide-react'
+import { Loader2, CheckCircle, Store, Truck, Calendar, CreditCard, ArrowLeft } from 'lucide-react'
+import { format, addDays, nextTuesday, nextFriday } from 'date-fns'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
@@ -17,7 +18,14 @@ import { useT } from '@/lib/i18n'
 import PWAInstallPrompt from '@/components/shop/PWAInstallPrompt'
 
 // ── Delivery date helpers ────────────────────────────────────────────────────
-
+function getDeliveryDates() {
+  const today = new Date()
+  let tue = nextTuesday(today)
+  let fri = nextFriday(today)
+  if (tue <= today) tue = addDays(tue, 7)
+  if (fri <= today) fri = addDays(fri, 7)
+  return { tuesday: tue, friday: fri }
+}
 
 // ── Load Revolut embed script once ──────────────────────────────────────────
 function useRevolutScript() {
@@ -49,6 +57,7 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
 
   const [step, setStep]                 = useState('form')  // 'form' | 'paying' | 'success'
   const [deliveryMethod, setDeliveryMethod] = useState('delivery')
+  const [deliveryDate, setDeliveryDate]     = useState('')
   const [formData, setFormData] = useState({
     customer_name: '', customer_email: '', customer_phone: '',
     delivery_address: '', delivery_city: '', delivery_postal_code: '', notes: '',
@@ -66,8 +75,9 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
     }
   }, [])
 
+  const dates      = getDeliveryDates()
   const subtotal   = cart.reduce((s, i) => s + i.price * i.quantity, 0)
-  const deliveryFee = deliveryMethod === 'pickup' ? 0 : (subtotal >= 3000 ? 0 : 170)
+  const deliveryFee = deliveryMethod === 'pickup' ? 0 : (subtotal >= 9000 ? 0 : 370)
   const total      = subtotal + deliveryFee
   const totalItems = cart.reduce((s, i) => s + i.quantity, 0)
 
@@ -87,6 +97,7 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
     // Dialog closed — reset
     setStep('form')
     setCreatedOrderId(null)
+    setDeliveryDate('')
     setGiftWrap(false)
     setGiftMessage('')
     setFormData({
@@ -107,7 +118,7 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
       const order = await createOrder({
         ...formData,
         delivery_method:      deliveryMethod,
-        delivery_date:        null,
+        delivery_date:        deliveryDate,
         delivery_address:     deliveryMethod === 'pickup' ? '19, Luj Paster str, Skopje 1000' : formData.delivery_address,
         delivery_city:        deliveryMethod === 'pickup' ? 'Skopje' : formData.delivery_city,
         delivery_postal_code: deliveryMethod === 'pickup' ? '1000' : formData.delivery_postal_code,
@@ -210,6 +221,7 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
 
   const handleSubmit = e => {
     e.preventDefault()
+    if (!deliveryDate) return toast.error('Please select a date')
     if (deliveryMethod === 'delivery' && !formData.delivery_address) {
       return toast.error('Please enter a delivery address')
     }
@@ -316,31 +328,31 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
                 <p className="text-[10px] text-[#3D4F3D]/70 tracking-wider mb-1">{t('pickup_location')}</p>
                 <p className="text-sm text-[#3D4F3D]">{t('budapest_store')}</p>
                 <p className="text-xs text-[#3D4F3D]/60">19, Luj Paster str, Skopje 1000</p>
+                <p className="text-xs text-[#3D4F3D]/60 mt-1">{t('pickup_note')}</p>
               </div>
             )}
           </div>
 
-          <div className="bg-white p-3 border border-[#3D4F3D]/10">
-  {deliveryMethod === 'delivery' ? (
-    <>
-      <p className="text-sm text-[#3D4F3D] font-medium">
-        Достава
-      </p>
-      <p className="text-xs text-[#3D4F3D]/70 mt-1">
-        Нарачките се доставуваат во рок од 2–3 работни дена.
-      </p>
-    </>
-  ) : (
-    <>
-      <p className="text-sm text-[#3D4F3D] font-medium">
-        Преземање од продавница
-      </p>
-      <p className="text-xs text-[#3D4F3D]/70 mt-1">
-        Ќе бидете контактирани кога нарачката ќе биде подготвена за преземање.
-      </p>
-    </>
-  )}
-</div>
+          {/* Date selection */}
+          <div className="space-y-3">
+            <Label className="text-[10px] text-[#3D4F3D]/70 tracking-wider flex items-center gap-2">
+              <Calendar className="w-3 h-3" />
+              {deliveryMethod === 'pickup' ? t('pickup_date') : t('delivery_date')}
+            </Label>
+            <Select value={deliveryDate} onValueChange={setDeliveryDate}>
+              <SelectTrigger className="bg-white border-[#3D4F3D]/20 rounded-none h-11 text-[#3D4F3D] focus:border-[#3D4F3D] focus:ring-0">
+                <SelectValue placeholder={t('select_date')} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={format(dates.tuesday, 'yyyy-MM-dd')}>
+                  Tuesday, {format(dates.tuesday, 'MMMM d')}
+                </SelectItem>
+                <SelectItem value={format(dates.friday, 'yyyy-MM-dd')}>
+                  Friday, {format(dates.friday, 'MMMM d')}
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
           <Separator className="bg-[#3D4F3D]/10" />
 
@@ -433,70 +445,13 @@ export default function CheckoutForm({ open, onClose, cart, onOrderSuccess, orde
               </span>
               <span>{deliveryFee === 0 ? t('free') : formatPrice(deliveryFee)}</span>
             </div>
-            {deliveryMethod === 'delivery' && (
-  <p className="text-[10px] text-[#3D4F3D]/50 italic">
-    * Цената за достава може да варира во зависност од локацијата и тарифникот на Карго Експрес. Конечната цена ќе биде потврдена при испорака.
-  </p>
-)}
             <Separator className="bg-[#3D4F3D]/10" />
             <div className="flex justify-between text-[#3D4F3D] font-medium">
               <span className="tracking-wider text-xs">{t('total')}</span>
               <span>{formatPrice(total)}</span>
             </div>
           </div>
-       <div className="mt-3 p-3 border border-[#3D4F3D]/20 bg-[#3D4F3D]/5 text-center">
-  <p className="text-sm font-medium text-[#3D4F3D]">
-    Плаќањето е при достава
-  </p>
-</div>
-          <Button
-  type="button"
-  className="w-full bg-[#3D4F3D] hover:bg-[#2D3F2D] text-white h-12 rounded-none"
-  onClick={async () => {
-    try {
-      const order = await createOrder({
-        ...formData,
-        delivery_method: deliveryMethod,
-        delivery_date: null,
-        delivery_address:
-          deliveryMethod === 'pickup'
-            ? '19, Luj Paster str, Skopje 1000'
-            : formData.delivery_address,
-        delivery_city:
-          deliveryMethod === 'pickup'
-            ? 'Skopje'
-            : formData.delivery_city,
-        delivery_postal_code:
-          deliveryMethod === 'pickup'
-            ? '1000'
-            : formData.delivery_postal_code,
-        items: cart.map(item => ({
-          product_id: item.id,
-          product_name: item.name,
-          quantity: item.quantity,
-          price: item.price,
-        })),
-        subtotal,
-        delivery_fee: deliveryFee,
-        total,
-        currency: 'MKD',
-        gift_wrap: giftWrap,
-        gift_message: giftMessage,
-      })
 
-      toast.success('Order created successfully')
-
-      onOrderSuccess?.()
-
-      navigate(`/order-confirmation/${order.id}`)
-    } catch (err) {
-      toast.error(err.message)
-    }
-  }}
->
-  НАПРАВИ НАРАЧКА
-</Button>
-  
           {/* Payment coming soon */}
           <div className="border border-dashed border-[#3D4F3D]/30 p-6 flex flex-col items-center gap-3 bg-white/50">
             <div className="flex items-center gap-2 text-[#3D4F3D]/40">
