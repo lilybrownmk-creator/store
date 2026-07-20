@@ -5,7 +5,7 @@ export const translations = {
   EN: {
     // Header / Nav
     menu:            'MENU',
-    tagline:         'Personal delivery across North Macedonia ',
+    tagline:         'Delivery across North Macedonia',
     search_ph:       'Search products...',
     no_results:      'No results for',
     clear_search:    'Clear search',
@@ -137,6 +137,20 @@ export const translations = {
     order_confirmed:   'ORDER CONFIRMED',
     payment_received:  'Payment received. We will contact you to confirm delivery.',
     continue_shopping: 'CONTINUE SHOPPING',
+    // ...додадени преводи EN:
+delivery_info_title: 'DELIVERY',
+delivery_info_desc: 'Orders are delivered within 2–3 business days.',
+pay_on_delivery_banner: 'Payment is on delivery',
+make_order_btn: 'PLACE ORDER',
+pickup_info_title: 'Store Pickup',
+pickup_info_desc: 'We will contact you when your order is ready for pickup.',
+cargo_disclaimer: '* Delivery price may vary based on location and Cargo Express tariffs. The final price will be confirmed upon delivery.',
+"Please enter your name and last name": "Please enter your name and last name",
+"Please enter your phone number": "Please enter your phone number",
+"Please enter a delivery address": "Please enter a delivery address",
+"Please enter a city": "Please enter a city",
+"Please enter a postal code": "Please enter a postal code"
+
 
     // Wishlist page
     back_to_shop:    'BACK TO SHOP',
@@ -191,7 +205,7 @@ export const translations = {
   MK: {
     // Header / Nav
     menu:            'МЕНИ',
-    tagline:         'Лична достава низ цела Македонија ',
+    tagline:         'Достава низ цела Македонија',
     search_ph:       'Пребарај производи...',
     no_results:      'Нема резултати за',
     clear_search:    'Исчисти пребарување',
@@ -263,7 +277,7 @@ export const translations = {
     away_free:      (amt) => `${amt} до бесплатна достава`,
     free_unlocked:  '✓ Бесплатна достава одблокирана',
     subtotal:       'МЕЃУЗБИР',
-    delivery:       'ДОСТАВА (+-СПОРЕД ТАРИФАТА НА КАРГО ЕКСПРЕС',
+    delivery:       'ДОСТАВА',
     free:           'БЕСПЛАТНО',
     total:          'ВКУПНО',
     checkout:       'НАРАЧАЈ',
@@ -300,7 +314,7 @@ export const translations = {
     pickup_sub:        'Преземи од продавница',
     pickup_location:   'МЕСТО ЗА ПРЕЗЕМАЊЕ',
     budapest_store:    'Продавница Скопје',
-    pickup_note:       'Ќе ве контактираме кога ќе биде готово',
+    pickup_note:       'Ќе бидете контактирани кога нарачката ќе биде подготвена за преземање.',
     pickup_date:       'ДАТУМ НА ПРЕЗЕМАЊЕ *',
     delivery_date:     'ДАТУМ НА ДОСТАВА *',
     select_date:       'Изберете датум',
@@ -323,6 +337,20 @@ export const translations = {
     order_confirmed:   'НАРАЧКАТА Е ПОТВРДЕНА',
     payment_received:  'Плаќањето е примено. Ќе ве контактираме за потврда на доставата.',
     continue_shopping: 'ПРОДОЛЖИ СО КУПУВАЊЕ',
+    // ... додадени преводи MK:
+delivery_info_title: 'Достава',
+delivery_info_desc: 'Нарачките се доставуваат во рок од 2–3 работни дена.',
+pay_on_delivery_banner: 'Плаќањето е при достава',
+make_order_btn: 'НАПРАВИ НАРАЧКА',
+pickup_info_title: 'Преземање од продавница',
+pickup_info_desc: 'Ќе бидете контактирани кога нарачката ќе биде подготвена за преземање.',
+cargo_disclaimer: '* Цената за достава може да варира во зависност од локацијата и тарифникот на Карго Експрес. Конечната цена ќе биде потврдена при испорака.',
+"Please enter your name and last name": "Ве молиме внесете го вашето име и презиме",
+"Please enter your phone number": "Ве молиме внесете телефонски број",
+"Please enter a delivery address": "Ве молиме внесете адреса за достава",
+"Please enter a city": "Ве молиме внесете град",
+"Please enter a postal code": "Ве молиме внесете поштенски број"
+
 
     // Wishlist page
     back_to_shop:    'НАЗАД ВО ПРОДАВНИЦАТА',
@@ -383,8 +411,8 @@ export function LanguageProvider({ children }) {
     try {
       const saved = localStorage.getItem('zr_lang')
       // If saved lang is HU or RU from a previous session, fall back to EN
-      return (saved === 'EN' || saved === 'MK') ? saved : 'MK'
-    } catch { return 'MK' }
+      return (saved === 'EN' || saved === 'MK') ? saved : 'EN'
+    } catch { return 'EN' }
   })
   useEffect(() => { localStorage.setItem('zr_lang', lang) }, [lang])
   return (
